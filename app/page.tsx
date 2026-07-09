@@ -12,6 +12,7 @@ import type { ChefAIInput, ChefAIResult, Lang, Mode, RejectReason } from "../lib
 import { generateRecipe, regenerate } from "../lib/ai/decisionEngine";
 import { adaptFavoriteRecipe } from "../lib/ai/mockChefAI";
 import { storage } from "../lib/storage";
+import { readCampaignLocale } from "../lib/urlParams";
 
 import { ScreenShell } from "../components/ui/ScreenShell";
 import { ChoiceCard } from "../components/ui/ChoiceCard";
@@ -74,10 +75,22 @@ export default function Home() {
   const [excludeIds, setExcludeIds] = useState<Set<string>>(new Set());
   const [pendingModule, setPendingModule] = useState<"shoppingList" | "calories" | "savings" | null>(null);
   const [pendingReject, setPendingReject] = useState<RejectReason | null>(null);
+  const [campaignLocked, setCampaignLocked] = useState(false);
 
   const S = t(lang);
 
   useEffect(() => {
+    const campaign = readCampaignLocale();
+    if (campaign) {
+      // A campaign link (?lang=en&country=uk) wins over anything saved locally,
+      // so the very first screen already matches what the ad promised.
+      setLang(campaign.lang);
+      setCountry(campaign.country);
+      storage.setString(storage.keys.language, campaign.lang);
+      storage.setString(storage.keys.country, campaign.country);
+      setCampaignLocked(true);
+      return;
+    }
     const savedLang = storage.getString(storage.keys.language) as Lang | null;
     const savedCountry = storage.getString(storage.keys.country);
     if (savedLang) setLang(savedLang);
@@ -191,7 +204,14 @@ export default function Home() {
       <AnimatePresence mode="wait">
         {step === "hero" && (
           <ScreenShell key="hero">
-            <Hero S={S} onStart={() => goTo("language")} />
+            <Hero
+              S={S}
+              lang={lang}
+              country={country}
+              campaignLocked={campaignLocked}
+              onStart={() => goTo(campaignLocked ? "mode" : "language")}
+              onChangeLocale={() => { setCampaignLocked(false); goTo("language"); }}
+            />
           </ScreenShell>
         )}
 
@@ -533,14 +553,30 @@ export default function Home() {
   );
 }
 
-function Hero({ S, onStart }: { S: any; onStart: () => void }) {
+function Hero({
+  S, lang, country, campaignLocked, onStart, onChangeLocale,
+}: {
+  S: any; lang: Lang; country: string; campaignLocked: boolean; onStart: () => void; onChangeLocale: () => void;
+}) {
+  const countryInfo = countries.find((c) => c.code === country);
   return (
     <div className="flex flex-col items-center text-center mt-16">
       <div className="w-20 h-20 rounded-full bg-surface border border-orange/30 flex items-center justify-center mb-8 shadow-glow">
         <Logo size={40} />
       </div>
       <h1 className="text-4xl font-extrabold text-warm mb-4 leading-[1.1] text-balance">{S.hero.headline}</h1>
-      <p className="text-muted mb-10 max-w-xs">{S.hero.subheadline}</p>
+      <p className="text-muted mb-6 max-w-xs">{S.hero.subheadline}</p>
+
+      {campaignLocked && countryInfo && (
+        <button
+          onClick={onChangeLocale}
+          className="flex items-center gap-2 text-xs font-semibold text-warm/80 bg-surface border border-white/10 rounded-full px-3.5 py-2 mb-6 hover:border-orange/50 transition-colors"
+        >
+          {countryInfo.flag} {lang === "es" ? "Español" : "English"} · {countryInfo.name}
+          <span className="text-muted">· {lang === "es" ? "cambiar" : "change"}</span>
+        </button>
+      )}
+
       <Button onClick={onStart} className="mb-6">{S.hero.cta}</Button>
       <p className="text-xs text-muted/70 max-w-[240px]">{S.hero.microcopy}</p>
     </div>
