@@ -449,7 +449,7 @@ export default function Home() {
             <div className="flex flex-col items-center text-center">
               <p className="text-orange text-xs font-bold tracking-[0.15em] uppercase mb-3">{S.diagnostic.resultTitle}</p>
               <div className="w-16 h-16 rounded-full bg-surface border border-orange/30 flex items-center justify-center mb-6 shadow-glow">
-                <Logo size={30} />
+                <Logo size={34} showText={false} />
               </div>
               <h1 className="text-2xl font-extrabold text-warm mb-3 leading-snug">{S.diagnostic.profiles[diagnosticProfile].title}</h1>
               <p className="text-warm/80 mb-8 max-w-xs">{S.diagnostic.profiles[diagnosticProfile].body}</p>
@@ -541,7 +541,7 @@ export default function Home() {
           <ScreenShell key="intro" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} progress={{ total: QUESTION_STEPS.length, current: 0 }}>
             <div className="flex flex-col items-center text-center mt-8">
               <div className="w-20 h-20 rounded-full bg-surface border border-orange/30 flex items-center justify-center mb-6 shadow-glow">
-                <Logo size={36} />
+                <Logo size={40} showText={false} />
               </div>
               <p className="text-lg text-warm/90 leading-snug mb-8 max-w-xs">{S.intro.message}</p>
               <Button onClick={() => goTo("people")}>{S.intro.cta} →</Button>
@@ -929,7 +929,7 @@ function Hero({
   return (
     <div className="flex flex-col items-center text-center mt-12">
       <div className="w-20 h-20 rounded-full bg-surface border border-orange/30 flex items-center justify-center mb-8 shadow-glow">
-        <Logo size={40} />
+        <Logo size={46} showText={false} />
       </div>
       <h1 className="text-4xl font-extrabold text-warm mb-3 leading-[1.1] text-balance">{S.hero.headline}</h1>
       <p className="text-olive font-bold mb-4 max-w-xs">{S.hero.subheadline}</p>
@@ -980,7 +980,7 @@ function FinalCta({ S, onTryAnother }: { S: any; onTryAnother: () => void }) {
   return (
     <div className="flex flex-col items-center text-center">
       <div className="w-16 h-16 rounded-full bg-surface border border-orange/30 flex items-center justify-center mb-6 shadow-glow">
-        <Logo size={30} />
+        <Logo size={34} showText={false} />
       </div>
       <h1 className="text-2xl font-extrabold text-warm mb-6 leading-snug text-balance">{S.finalCta.message}</h1>
       <div className="flex flex-col gap-2 mb-8 w-full">

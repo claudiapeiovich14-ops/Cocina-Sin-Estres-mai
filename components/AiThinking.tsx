@@ -71,7 +71,7 @@ export function AiThinking({
         </div>
 
         <div className="relative w-32 h-32 rounded-full bg-surface border border-orange/40 flex items-center justify-center shadow-glow">
-          <Logo size={58} spinning />
+          <Logo size={62} spinning showText={false} />
         </div>
       </div>
 

@@ -1,6 +1,6 @@
 "use client";
 
-export function Logo({ size = 28, spinning = false }: { size?: number; spinning?: boolean }) {
+export function Logo({ size = 28, spinning = false, showText = true }: { size?: number; spinning?: boolean; showText?: boolean }) {
   return (
     <svg
       width={size}
@@ -16,16 +16,20 @@ export function Logo({ size = 28, spinning = false }: { size?: number; spinning?
 
       <circle cx="100" cy="100" r="94" fill="#F7EEDF" stroke="#8B9B6E" strokeWidth="5" />
 
-      <text fill="#7C8C5E" fontSize="21" fontWeight="800" letterSpacing="2" fontFamily="Georgia, serif">
-        <textPath href="#logoTopArc" startOffset="50%" textAnchor="middle">
-          COCINA
-        </textPath>
-      </text>
-      <text fill="#7C8C5E" fontSize="16" fontWeight="800" letterSpacing="2" fontFamily="Georgia, serif">
-        <textPath href="#logoBottomArc" startOffset="50%" textAnchor="middle">
-          SIN ESTRÉS
-        </textPath>
-      </text>
+      {showText && (
+        <>
+          <text fill="#7C8C5E" fontSize="21" fontWeight="800" letterSpacing="2" fontFamily="Georgia, serif">
+            <textPath href="#logoTopArc" startOffset="50%" textAnchor="middle">
+              COCINA
+            </textPath>
+          </text>
+          <text fill="#7C8C5E" fontSize="16" fontWeight="800" letterSpacing="2" fontFamily="Georgia, serif">
+            <textPath href="#logoBottomArc" startOffset="50%" textAnchor="middle">
+              SIN ESTRÉS
+            </textPath>
+          </text>
+        </>
+      )}
 
       {/* fork */}
       <g transform="rotate(-10 68 100)" stroke="#8B9B6E" strokeWidth="5" strokeLinecap="round" fill="none">

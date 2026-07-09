@@ -10,7 +10,7 @@ export const strings = {
       support: "Aprendé a organizar tus comidas, resolver qué cocinar cada día y armar tu lista de compras sin improvisar, sin pensar de cero y sin vivir preguntándote “¿qué hago de comer hoy?”",
       cta: "Empezar mi diagnóstico",
       secondaryCta: "Ver cómo funciona",
-      microcopy: "Nada de PDFs. Nada de buscar recetas para siempre. Solo una decisión clara.",
+      microcopy: "No es un ebook. No es un PDF. Es tu Chef IA, las 24 horas.",
     },
     howItWorks: {
       title: "Cómo funciona",
@@ -375,7 +375,7 @@ export const strings = {
       support: "Learn to organize your meals, decide what to cook each day, and build your shopping list — without improvising, without starting from zero, without living stuck on “what should I cook today?”",
       cta: "Start my diagnosis",
       secondaryCta: "See how it works",
-      microcopy: "No PDFs. No endless recipe search. Just one clear dinner decision.",
+      microcopy: "Not an ebook. Not a PDF. Your AI Chef, 24/7.",
     },
     howItWorks: {
       title: "How it works",
