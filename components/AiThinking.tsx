@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Logo } from "../ui/Logo";
+import { Logo } from "./Logo";
 
 const ORBIT_EMOJI = ["🍅", "🥑", "🧄", "🍗", "🌶️", "🧀", "🥕", "🍚"];
 

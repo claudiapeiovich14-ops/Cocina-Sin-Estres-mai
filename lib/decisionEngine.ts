@@ -1,6 +1,6 @@
-import { recipes, RecipeTemplate, Protein } from "../data/recipes";
-import type { ChefAIInput, ChefAIResult, Ingredient, MissingIngredient, ShoppingListGroup, RejectReason, Lang } from "../types";
-import { countries } from "../data/countries";
+import { recipes, RecipeTemplate, Protein } from "./recipes";
+import type { ChefAIInput, ChefAIResult, Ingredient, MissingIngredient, ShoppingListGroup, RejectReason, Lang, WeeklyPlan, WeeklyPlanDay } from "./types";
+import { countries } from "./countries";
 
 const FX: Record<string, number> = {
   ARS: 1050, USD: 1, EUR: 0.92, MXN: 18, BRL: 5.5, GBP: 0.79, CAD: 1.37,
@@ -24,6 +24,7 @@ function peopleToServings(people: string): number {
 
 function timeToMinutes(time: string): number {
   switch (time) {
+    case "10": return 10;
     case "15": return 15;
     case "20": return 20;
     case "30": return 30;
@@ -116,6 +117,16 @@ function scoreRecipe(recipe: RecipeTemplate, input: ChefAIInput, opts: ScoreOpts
   if (weather === "rainy" && recipe.cuisine === "comfort") score += 5;
   if (weather === "humid" && recipe.dietTags.includes("light")) score += 5;
   if (weather === "sunny" && recipe.cuisine === "fresh") score += 4;
+
+  // "El Método Cena Resuelta™": low energy means the user needs the path of
+  // least resistance, not inspiration — bias hard toward fast + easy.
+  if (input.energyLevel === "low") {
+    if (recipe.goalTags.includes("fast") || recipe.goalTags.includes("easy")) score += 10;
+    if (recipe.difficulty === "Easy") score += 6;
+    if (recipe.timeMinutes <= 20) score += 6;
+  } else if (input.energyLevel === "high") {
+    if (recipe.difficulty !== "Easy") score += 4;
+  }
 
   if (opts.randomize) score += Math.random() * 20;
   else score += Math.random() * 2; // tiny jitter so ties don't always resolve the same way
@@ -315,4 +326,31 @@ export function regenerate(input: ChefAIInput, excludeIds: Set<string>, previous
 
   const recipe = pickRecipe(patchedInput, opts);
   return { recipeId: recipe.id, result: buildResult(recipe, patchedInput) };
+}
+
+export function generateWeeklyPlan(input: ChefAIInput, dayLabels: string[]): WeeklyPlan {
+  const excludeIds = new Set<string>();
+  const days: WeeklyPlanDay[] = [];
+
+  for (const label of dayLabels) {
+    const recipe = pickRecipe(input, { excludeIds });
+    excludeIds.add(recipe.id);
+    days.push({ label, recipeId: recipe.id, result: buildResult(recipe, input) });
+  }
+
+  const lang = input.language;
+  const groups = new Map<string, Set<string>>();
+  for (const day of days) {
+    for (const m of day.result.missingIngredients) {
+      const label = CATEGORY_LABEL[lang][m.category] ?? m.category;
+      if (!groups.has(label)) groups.set(label, new Set());
+      groups.get(label)!.add(`${m.name} (${m.quantity})`);
+    }
+  }
+  const shoppingList: ShoppingListGroup[] = Array.from(groups.entries()).map(([category, items]) => ({
+    category,
+    items: Array.from(items),
+  }));
+
+  return { days, shoppingList };
 }

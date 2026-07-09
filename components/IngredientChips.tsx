@@ -43,7 +43,7 @@ export function IngredientChips({
           }
         }}
         placeholder={placeholder}
-        className="w-full rounded-2xl bg-surface border border-white/10 px-5 py-4 text-warm placeholder:text-muted focus:outline-none focus:border-orange/60 transition-colors"
+        className="w-full rounded-2xl bg-surface border border-black/10 px-5 py-4 text-warm placeholder:text-muted focus:outline-none focus:border-orange/60 transition-colors"
       />
 
       {value.length > 0 && (
@@ -78,7 +78,7 @@ export function IngredientChips({
                 <button
                   key={s}
                   onClick={() => add(s)}
-                  className="text-sm px-3 py-1.5 rounded-full border border-white/10 text-warm/80 hover:border-orange/50 hover:text-warm transition-colors"
+                  className="text-sm px-3 py-1.5 rounded-full border border-black/10 text-warm/80 hover:border-orange/50 hover:text-warm transition-colors"
                 >
                   + {s}
                 </button>

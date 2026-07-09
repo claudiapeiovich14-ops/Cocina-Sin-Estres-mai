@@ -1,4 +1,4 @@
-// Canonical keys, index-aligned with the label arrays in lib/i18n/strings.ts
+// Canonical keys, index-aligned with the label arrays in lib/strings.ts
 // This keeps the decision engine language-agnostic: components display strings.xxx[i],
 // but store options.xxxKeys[i] in ChefAIInput.
 
@@ -27,3 +27,17 @@ export const adaptOptionKeys = [
   "faster", "healthier", "cheaper", "moreProtein", "lowerCalories",
   "kidFriendly", "glutenFree", "dairyFree", "useWhatIHave", "adaptFamilySize",
 ] as const;
+
+// Diagnostic quiz — index-aligned with lib/strings.ts diagnostic.q1/q2/q3 options
+export const diagnosticQ1Keys = [
+  "noSeQueCocinar", "tengoComidaNoIdeas", "siempreLoMismo", "delivery", "compraSinPlan",
+] as const;
+
+export const diagnosticQ2Keys = ["zero", "some", "depends", "likesCookingNeedsOrder"] as const;
+
+export const diagnosticQ3Keys = ["quickIdeas", "weeklyMenu", "shoppingList", "eatBetter", "saveTimeMoney"] as const;
+
+// El Método Cena Resuelta™ — quick 3-step flow
+export const energyKeys = ["low", "medium", "high"] as const;
+export const methodTimeKeys = ["10", "20", "30"] as const;
+export const methodIngredientKeys = ["chicken", "beef", "eggs", "vegetables", "riceOrPasta", "whateverIHave"] as const;

@@ -5,24 +5,29 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        bg: "#090909",
-        surface: "#141414",
-        surface2: "#1c1c1c",
+        bg: "#FBF6EE",
+        surface: "#FFFFFF",
+        surface2: "#F2E9D8",
         orange: {
-          DEFAULT: "#FF7A1A",
-          soft: "#FF9A4D",
-          dim: "#3A2210",
+          DEFAULT: "#E8672C",
+          soft: "#F0895A",
+          dim: "#FBE2D0",
         },
-        warm: "#F5EDE6",
-        success: "#3CB371",
-        muted: "#8F8F8F",
+        olive: {
+          DEFAULT: "#6E7F4F",
+          soft: "#93A374",
+          dim: "#E7ECDC",
+        },
+        warm: "#2B2620",
+        success: "#5B8A52",
+        muted: "#8A8272",
       },
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
       },
       boxShadow: {
-        glow: "0 0 60px -10px rgba(255, 122, 26, 0.45)",
-        card: "0 10px 30px -10px rgba(0,0,0,0.6)",
+        glow: "0 10px 30px -8px rgba(232, 103, 44, 0.35)",
+        card: "0 10px 30px -10px rgba(43,38,32,0.12)",
       },
       keyframes: {
         floatSlow: {

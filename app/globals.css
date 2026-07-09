@@ -7,12 +7,12 @@
 }
 
 html {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 body {
-  background: #090909;
-  color: #F5EDE6;
+  background: #FBF6EE;
+  color: #2B2620;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -22,8 +22,8 @@ body {
 }
 
 ::selection {
-  background: #FF7A1A;
-  color: #090909;
+  background: #E8672C;
+  color: #FBF6EE;
 }
 
 ::-webkit-scrollbar {
@@ -31,15 +31,15 @@ body {
   height: 8px;
 }
 ::-webkit-scrollbar-thumb {
-  background: #2a2a2a;
+  background: #DCD0B8;
   border-radius: 8px;
 }
 
 .glass {
-  background: rgba(20, 20, 20, 0.6);
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(43, 38, 32, 0.08);
 }
 
 .text-balance {

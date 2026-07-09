@@ -1,4 +1,4 @@
-import type { ChefAIInput, ChefAIResult, Ingredient, Lang } from "../types";
+import type { ChefAIInput, ChefAIResult, Ingredient, Lang } from "./types";
 
 // Frontend-only mock adapter. A real AI API adapter can replace the body of
 // adaptFavoriteRecipe / generateFromInput later without changing the call sites.

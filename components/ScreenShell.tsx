@@ -8,12 +8,14 @@ import { ProgressDots } from "./ProgressDots";
 export function ScreenShell({
   children,
   onBack,
+  onHome,
   progress,
   eyebrow,
   wide = false,
 }: {
   children: ReactNode;
   onBack?: () => void;
+  onHome?: () => void;
   progress?: { total: number; current: number };
   eyebrow?: string;
   wide?: boolean;
@@ -28,10 +30,15 @@ export function ScreenShell({
         >
           ←
         </button>
-        <div className="flex items-center gap-2">
+        <button
+          onClick={onHome}
+          disabled={!onHome}
+          className="flex items-center gap-2 disabled:pointer-events-none"
+          aria-label="Volver al inicio"
+        >
           <Logo size={20} />
           <span className="text-sm font-bold tracking-wide text-warm">Chef AI</span>
-        </div>
+        </button>
         <div className="w-6" />
       </div>
 

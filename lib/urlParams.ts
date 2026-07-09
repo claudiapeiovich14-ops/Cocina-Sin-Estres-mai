@@ -1,5 +1,5 @@
 import type { Lang } from "./types";
-import { countries } from "./data/countries";
+import { countries } from "./countries";
 
 const COUNTRY_ALIASES: Record<string, string> = {
   UK: "GB",

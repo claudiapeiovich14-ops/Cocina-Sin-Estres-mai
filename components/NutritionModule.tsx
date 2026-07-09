@@ -1,8 +1,8 @@
 "use client";
 
-import type { ChefAIResult } from "../../lib/types";
-import { CircularProgress } from "../ui/CircularProgress";
-import { Button } from "../ui/Button";
+import type { ChefAIResult } from "../lib/types";
+import { CircularProgress } from "./CircularProgress";
+import { Button } from "./Button";
 
 export function NutritionModule({
   result,

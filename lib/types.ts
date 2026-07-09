@@ -33,6 +33,7 @@ export interface ChefAIInput {
   mainGoal: string;
   favoriteRecipeText?: string;
   weatherContext?: WeatherContext;
+  energyLevel?: EnergyLevel;
 }
 
 export interface Ingredient {
@@ -91,6 +92,32 @@ export interface ChefAIResult {
   tips: string[];
   deliverySavings?: DeliverySavings;
   alternativeSuggestion?: string;
+}
+
+export type EnergyLevel = "low" | "medium" | "high";
+
+export type DiagnosticProfileKey =
+  | "improvisadora"
+  | "repetidora"
+  | "compradora"
+  | "delivery"
+  | "organizada";
+
+export interface FavoriteRecipe {
+  id: string;
+  savedAt: number;
+  result: ChefAIResult;
+}
+
+export interface WeeklyPlanDay {
+  label: string;
+  recipeId: string | null;
+  result: ChefAIResult;
+}
+
+export interface WeeklyPlan {
+  days: WeeklyPlanDay[];
+  shoppingList: ShoppingListGroup[];
 }
 
 export type RejectReason =

@@ -6,6 +6,7 @@ const KEYS = {
   theme: `${PREFIX}theme`,
   lastPreferences: `${PREFIX}last_preferences`,
   lastResult: `${PREFIX}last_result`,
+  favorites: `${PREFIX}favorites`,
 } as const;
 
 function safeGet(key: string): string | null {

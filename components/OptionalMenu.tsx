@@ -1,6 +1,6 @@
 "use client";
 
-import { ChoiceCard } from "../ui/ChoiceCard";
+import { ChoiceCard } from "./ChoiceCard";
 
 export function OptionalMenu({
   title,

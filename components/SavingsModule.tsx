@@ -1,8 +1,8 @@
 "use client";
 
-import type { ChefAIResult } from "../../lib/types";
-import { AnimatedNumber } from "../ui/AnimatedNumber";
-import { Button } from "../ui/Button";
+import type { ChefAIResult } from "../lib/types";
+import { AnimatedNumber } from "./AnimatedNumber";
+import { Button } from "./Button";
 
 function parseMoney(formatted: string): { prefix: string; value: number } {
   const match = formatted.match(/^([A-Za-z]*)\s*([\d.,]+)$/);

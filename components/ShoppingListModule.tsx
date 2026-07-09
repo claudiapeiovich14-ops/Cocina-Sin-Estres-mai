@@ -1,21 +1,21 @@
 "use client";
 
-import type { ChefAIResult } from "../../lib/types";
-import { Button } from "../ui/Button";
+import type { ShoppingListGroup } from "../lib/types";
+import { Button } from "./Button";
 
 export function ShoppingListModule({
-  result,
+  shoppingList,
   strings,
   onCopy,
   onBack,
 }: {
-  result: ChefAIResult;
+  shoppingList: ShoppingListGroup[];
   strings: any;
   onCopy: (text: string) => void;
   onBack: () => void;
 }) {
   function copy() {
-    const text = result.shoppingList.map((g) => `${g.category}:\n${g.items.map((i) => `- ${i}`).join("\n")}`).join("\n\n");
+    const text = shoppingList.map((g) => `${g.category}:\n${g.items.map((i) => `- ${i}`).join("\n")}`).join("\n\n");
     onCopy(text);
   }
 
@@ -24,11 +24,11 @@ export function ShoppingListModule({
       <h1 className="text-2xl font-extrabold text-warm mb-1">{strings.shoppingListModule.title}</h1>
       <p className="text-muted text-xs mb-6">{strings.shoppingListModule.subtitle}</p>
 
-      {result.shoppingList.length === 0 ? (
+      {shoppingList.length === 0 ? (
         <p className="text-muted text-sm mb-6">{strings.shoppingListModule.nothingMissing}</p>
       ) : (
         <div className="flex flex-col gap-5 mb-6">
-          {result.shoppingList.map((group) => (
+          {shoppingList.map((group) => (
             <div key={group.category}>
               <h3 className="text-xs font-bold uppercase tracking-wide text-orange mb-2">{group.category}</h3>
               <ul className="flex flex-col gap-1.5">

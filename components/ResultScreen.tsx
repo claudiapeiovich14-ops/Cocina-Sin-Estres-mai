@@ -1,8 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import type { ChefAIResult } from "../../lib/types";
-import { Button } from "../ui/Button";
+import type { ChefAIResult } from "../lib/types";
+import { Button } from "./Button";
 
 export function ResultScreen({
   result,
