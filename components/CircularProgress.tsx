@@ -11,12 +11,12 @@ export function CircularProgress({ value, label, sublabel, size = 96 }: { value:
     <div className="flex flex-col items-center gap-2">
       <div className="relative" style={{ width: size, height: size }}>
         <svg width={size} height={size} className="-rotate-90">
-          <circle cx={size / 2} cy={size / 2} r={radius} stroke="#EDE3CE" strokeWidth={stroke} fill="none" />
+          <circle cx={size / 2} cy={size / 2} r={radius} stroke="#232323" strokeWidth={stroke} fill="none" />
           <motion.circle
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            stroke="#E8672C"
+            stroke="#FF7A1A"
             strokeWidth={stroke}
             fill="none"
             strokeLinecap="round"

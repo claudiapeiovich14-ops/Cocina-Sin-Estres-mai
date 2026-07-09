@@ -29,7 +29,7 @@ export function SavedRecipesList({
           {favorites.map((fav) => (
             <div
               key={fav.id}
-              className="w-full rounded-2xl border border-black/8 bg-surface px-4 py-3.5 flex items-center gap-3"
+              className="w-full rounded-2xl border border-white/8 bg-surface px-4 py-3.5 flex items-center gap-3"
             >
               <button onClick={() => onOpen(fav.id)} className="flex items-center gap-3 flex-1 min-w-0 text-left">
                 <span className="text-2xl">{fav.result.imageEmoji}</span>

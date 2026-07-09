@@ -7,7 +7,7 @@ export function ProgressDots({ total, current }: { total: number; current: numbe
         <div
           key={i}
           className={`h-1.5 rounded-full transition-all duration-300 ${
-            i === current ? "w-6 bg-orange" : i < current ? "w-1.5 bg-orange/50" : "w-1.5 bg-black/10"
+            i === current ? "w-6 bg-orange" : i < current ? "w-1.5 bg-orange/50" : "w-1.5 bg-white/10"
           }`}
         />
       ))}

@@ -19,7 +19,7 @@ export function Logo({ size = 28, spinning = false }: { size?: number; spinning?
             width="6"
             height="26"
             rx="3"
-            fill="#E8672C"
+            fill="#FF7A1A"
             opacity={0.35 + (i % 3) * 0.22}
             transform={`rotate(${angle} 50 50)`}
           />

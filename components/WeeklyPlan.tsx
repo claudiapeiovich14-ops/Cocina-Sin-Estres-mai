@@ -30,7 +30,7 @@ export function WeeklyPlanView({
           <button
             key={i}
             onClick={() => onViewDay(i)}
-            className="w-full text-left rounded-2xl border border-black/8 bg-surface hover:border-orange/40 transition-colors px-4 py-3.5 flex items-center gap-3"
+            className="w-full text-left rounded-2xl border border-white/8 bg-surface hover:border-orange/40 transition-colors px-4 py-3.5 flex items-center gap-3"
           >
             <span className="text-2xl">{day.result.imageEmoji}</span>
             <div className="flex-1 min-w-0">

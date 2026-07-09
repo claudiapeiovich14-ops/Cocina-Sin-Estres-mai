@@ -696,7 +696,7 @@ export default function Home() {
               onChange={(e) => setFavoriteText(e.target.value)}
               placeholder={S.favorite.placeholder}
               rows={8}
-              className="w-full rounded-2xl bg-surface border border-black/10 px-5 py-4 text-warm placeholder:text-muted focus:outline-none focus:border-orange/60 transition-colors mb-6"
+              className="w-full rounded-2xl bg-surface border border-white/10 px-5 py-4 text-warm placeholder:text-muted focus:outline-none focus:border-orange/60 transition-colors mb-6"
             />
             <Button onClick={() => goTo("favoriteAdapt")} disabled={favoriteText.trim().length === 0}>{S.ui.next}</Button>
           </ScreenShell>
@@ -933,10 +933,10 @@ function Hero({
       <p className="text-olive font-bold mb-4 max-w-xs">{S.hero.subheadline}</p>
       <p className="text-muted mb-6 max-w-sm leading-relaxed">{S.hero.support}</p>
 
-      {campaignLocked && countryInfo && (
+      {countryInfo && (
         <button
           onClick={onChangeLocale}
-          className="flex items-center gap-2 text-xs font-semibold text-warm/80 bg-surface border border-black/10 rounded-full px-3.5 py-2 mb-6 hover:border-orange/50 transition-colors"
+          className="flex items-center gap-2 text-xs font-semibold text-warm/80 bg-surface border border-white/10 rounded-full px-3.5 py-2 mb-6 hover:border-orange/50 transition-colors"
         >
           {countryInfo.flag} {lang === "es" ? "Español" : "English"} · {countryInfo.name}
           <span className="text-muted">· {lang === "es" ? "cambiar" : "change"}</span>

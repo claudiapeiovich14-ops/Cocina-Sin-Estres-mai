@@ -22,7 +22,7 @@ export function ScreenShell({
 }) {
   return (
     <div className="min-h-screen flex flex-col items-center px-5 py-8 relative overflow-hidden">
-      <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-orange/10 blur-[120px]" />
+      <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-orange/20 blur-[110px]" />
       <div className="w-full max-w-md flex items-center justify-between mb-8 relative z-10">
         <button
           onClick={onBack}

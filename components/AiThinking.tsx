@@ -34,10 +34,20 @@ export function AiThinking({
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-6 relative overflow-hidden">
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-        <div className="w-[420px] h-[420px] rounded-full bg-orange/15 blur-[100px] animate-pulseGlow" />
+        <div className="w-[460px] h-[460px] rounded-full bg-orange/25 blur-[90px] animate-pulseGlow" />
       </div>
 
       <div className="relative w-64 h-64 flex items-center justify-center mb-10">
+        <div
+          className="absolute w-44 h-44 rounded-full animate-spinSlow"
+          style={{
+            animationDuration: "3s",
+            background: "conic-gradient(from 0deg, #FF7A1A, #FFD9AD 25%, transparent 45%, transparent 55%, #FF7A1A 100%)",
+            filter: "drop-shadow(0 0 18px rgba(255,122,26,0.7))",
+          }}
+        />
+        <div className="absolute w-[152px] h-[152px] rounded-full bg-bg" />
+
         <div className="absolute inset-0 animate-spinSlow" style={{ animationDuration: "14s" }}>
           {ORBIT_EMOJI.map((emoji, i) => {
             const angle = (i * 360) / ORBIT_EMOJI.length;
@@ -60,8 +70,8 @@ export function AiThinking({
           })}
         </div>
 
-        <div className="relative w-28 h-28 rounded-full bg-surface border border-orange/30 flex items-center justify-center shadow-glow">
-          <Logo size={52} spinning />
+        <div className="relative w-32 h-32 rounded-full bg-surface border border-orange/40 flex items-center justify-center shadow-glow">
+          <Logo size={58} spinning />
         </div>
       </div>
 

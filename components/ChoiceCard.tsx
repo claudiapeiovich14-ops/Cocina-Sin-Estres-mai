@@ -24,7 +24,7 @@ export function ChoiceCard({
       } ${
         selected
           ? "border-orange bg-orange/10 shadow-glow"
-          : "border-black/8 bg-surface hover:border-black/20"
+          : "border-white/8 bg-surface hover:border-white/20"
       }`}
     >
       {emoji && <span className="text-xl">{emoji}</span>}
