@@ -356,6 +356,7 @@ export const strings = {
     },
     ui: {
       back: "← Atrás",
+      backWord: "Volver",
       next: "Siguiente →",
       finish: "Ver mi resumen →",
       copied: "¡Copiado!",
@@ -720,6 +721,7 @@ export const strings = {
     },
     ui: {
       back: "← Back",
+      backWord: "Back",
       next: "Next →",
       finish: "See my summary →",
       copied: "Copied!",

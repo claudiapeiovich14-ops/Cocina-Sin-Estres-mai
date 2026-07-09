@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "./Button";
+import { ProgressDots } from "./ProgressDots";
 
 export interface GuideChapterData {
   title: string;
@@ -9,6 +10,8 @@ export interface GuideChapterData {
   structure?: string[];
   quote: string;
 }
+
+const CHAPTER_EMOJI = ["🤯", "⚠️", "🆘", "📅"];
 
 export function GuideChapter({
   chapter,
@@ -19,6 +22,8 @@ export function GuideChapter({
   onNext,
   onDone,
   doneLabel,
+  prevLabel,
+  nextLabel,
 }: {
   chapter: GuideChapterData;
   index: number;
@@ -28,14 +33,22 @@ export function GuideChapter({
   onNext: () => void;
   onDone: () => void;
   doneLabel: string;
+  prevLabel: string;
+  nextLabel: string;
 }) {
   const list = chapter.errors ?? chapter.structure;
 
   return (
     <div className="flex flex-col">
-      <p className="text-orange text-xs font-bold tracking-[0.15em] uppercase mb-2">
-        {title} · {index + 1}/{total}
-      </p>
+      <div className="flex items-center justify-between mb-5">
+        <p className="text-orange text-xs font-bold tracking-[0.15em] uppercase">{title}</p>
+        <ProgressDots total={total} current={index} />
+      </div>
+
+      <div className="w-14 h-14 rounded-2xl bg-orange/15 flex items-center justify-center text-3xl mb-4">
+        {CHAPTER_EMOJI[index] ?? "📖"}
+      </div>
+
       <h1 className="text-2xl font-extrabold text-warm mb-4 leading-snug">{chapter.title}</h1>
 
       {chapter.body && <p className="text-warm/80 leading-relaxed mb-5">{chapter.body}</p>}
@@ -59,12 +72,12 @@ export function GuideChapter({
 
       <div className="flex gap-3 mt-auto">
         <Button variant="secondary" onClick={onPrev} disabled={index === 0} className="flex-1">
-          ←
+          ← {prevLabel}
         </Button>
         {index < total - 1 ? (
-          <Button onClick={onNext} className="flex-[3]">→</Button>
+          <Button onClick={onNext} className="flex-[2]">{nextLabel} →</Button>
         ) : (
-          <Button onClick={onDone} className="flex-[3]">{doneLabel}</Button>
+          <Button onClick={onDone} className="flex-[2]">{doneLabel}</Button>
         )}
       </div>
     </div>

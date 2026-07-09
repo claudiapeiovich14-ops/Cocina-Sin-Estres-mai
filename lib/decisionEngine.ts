@@ -90,6 +90,13 @@ function scoreRecipe(recipe: RecipeTemplate, input: ChefAIInput, opts: ScoreOpts
   if (opts.biasKidFriendly && recipe.dietTags.includes("kidFriendly")) score += 18;
   if (opts.excludeProtein && recipe.protein === opts.excludeProtein) score -= 100;
 
+  // Tofu isn't a common pantry item in most of the countries we serve —
+  // only surface it when the user actually asked for something vegetarian/vegan.
+  const wantsPlantBased = input.foodPreference === "vegetarian"
+    || input.dietaryRestrictions.includes("vegetarian")
+    || input.dietaryRestrictions.includes("vegan");
+  if (recipe.protein === "tofu" && !wantsPlantBased) score -= 20;
+
   const pref = input.foodPreference;
   if (pref && pref !== "surprise") {
     if (recipe.protein === pref) score += 10;

@@ -352,7 +352,7 @@ export default function Home() {
     <>
       <AnimatePresence mode="wait">
         {step === "hero" && (
-          <ScreenShell key="hero" onHome={goHome}>
+          <ScreenShell key="hero" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName}>
             <Hero
               S={S}
               lang={lang}
@@ -366,13 +366,13 @@ export default function Home() {
         )}
 
         {step === "howItWorks" && (
-          <ScreenShell key="howItWorks" onHome={goHome} onBack={goBack}>
+          <ScreenShell key="howItWorks" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack}>
             <HowItWorks S={S} onStart={goToDiagnosticOrDashboard} />
           </ScreenShell>
         )}
 
         {step === "language" && (
-          <ScreenShell key="language" onHome={goHome} onBack={goBack}>
+          <ScreenShell key="language" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack}>
             <h1 className="text-2xl font-extrabold text-warm mb-1">{S.language.title}</h1>
             <p className="text-muted text-sm mb-6">{S.language.subtitle}</p>
             <div className="flex flex-col gap-3">
@@ -383,7 +383,7 @@ export default function Home() {
         )}
 
         {step === "country" && (
-          <ScreenShell key="country" onHome={goHome} onBack={goBack}>
+          <ScreenShell key="country" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack}>
             <h1 className="text-2xl font-extrabold text-warm mb-1">{S.country.title}</h1>
             <p className="text-muted text-sm mb-6">{S.country.subtitle}</p>
             <div className="flex flex-col gap-2 max-h-[55vh] overflow-y-auto pr-1">
@@ -402,7 +402,7 @@ export default function Home() {
         )}
 
         {step === "diagnosticQ1" && (
-          <ScreenShell key="diagnosticQ1" onHome={goHome} onBack={goBack} eyebrow={S.diagnostic.title} progress={{ total: 3, current: 0 }}>
+          <ScreenShell key="diagnosticQ1" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} eyebrow={S.diagnostic.title} progress={{ total: 3, current: 0 }}>
             <h1 className="text-2xl font-extrabold text-warm mb-6">{S.diagnostic.q1.title}</h1>
             <div className="flex flex-col gap-3">
               {S.diagnostic.q1.options.map((label, i) => (
@@ -413,7 +413,7 @@ export default function Home() {
         )}
 
         {step === "diagnosticQ2" && (
-          <ScreenShell key="diagnosticQ2" onHome={goHome} onBack={goBack} eyebrow={S.diagnostic.title} progress={{ total: 3, current: 1 }}>
+          <ScreenShell key="diagnosticQ2" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} eyebrow={S.diagnostic.title} progress={{ total: 3, current: 1 }}>
             <h1 className="text-2xl font-extrabold text-warm mb-6">{S.diagnostic.q2.title}</h1>
             <div className="flex flex-col gap-3">
               {S.diagnostic.q2.options.map((label, i) => (
@@ -424,7 +424,7 @@ export default function Home() {
         )}
 
         {step === "diagnosticQ3" && (
-          <ScreenShell key="diagnosticQ3" onHome={goHome} onBack={goBack} eyebrow={S.diagnostic.title} progress={{ total: 3, current: 2 }}>
+          <ScreenShell key="diagnosticQ3" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} eyebrow={S.diagnostic.title} progress={{ total: 3, current: 2 }}>
             <h1 className="text-2xl font-extrabold text-warm mb-6">{S.diagnostic.q3.title}</h1>
             <div className="flex flex-col gap-3">
               {S.diagnostic.q3.options.map((label, i) => (
@@ -445,7 +445,7 @@ export default function Home() {
         )}
 
         {step === "diagnosticResult" && diagnosticProfile && (
-          <ScreenShell key="diagnosticResult" onHome={goHome}>
+          <ScreenShell key="diagnosticResult" onHome={goHome} onBack={goBack} backLabel={S.ui.backWord} appName={S.appName}>
             <div className="flex flex-col items-center text-center">
               <p className="text-orange text-xs font-bold tracking-[0.15em] uppercase mb-3">{S.diagnostic.resultTitle}</p>
               <div className="w-16 h-16 rounded-full bg-surface border border-orange/30 flex items-center justify-center mb-6 shadow-glow">
@@ -459,7 +459,7 @@ export default function Home() {
         )}
 
         {step === "mode" && (
-          <ScreenShell key="mode" onHome={goHome} onBack={goBack}>
+          <ScreenShell key="mode" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack}>
             <Dashboard
               title={S.dashboard.title}
               subtitle={S.dashboard.subtitle}
@@ -474,7 +474,7 @@ export default function Home() {
         )}
 
         {step === "allOptions" && (
-          <ScreenShell key="allOptions" onHome={goHome} onBack={goBack}>
+          <ScreenShell key="allOptions" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack}>
             <h1 className="text-2xl font-extrabold text-warm mb-6">{S.mode.title}</h1>
             <div className="flex flex-col gap-3">
               {S.mode.cards.map((c) => (
@@ -496,7 +496,7 @@ export default function Home() {
         )}
 
         {step === "methodEnergy" && (
-          <ScreenShell key="methodEnergy" onHome={goHome} onBack={goBack} eyebrow={S.method.eyebrow} progress={{ total: 3, current: 0 }}>
+          <ScreenShell key="methodEnergy" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} eyebrow={S.method.eyebrow} progress={{ total: 3, current: 0 }}>
             <h1 className="text-xl font-extrabold text-warm mb-1">{S.method.title}</h1>
             <p className="text-muted text-sm mb-6">{S.method.subtitle}</p>
             <h2 className="text-lg font-bold text-warm mb-4">{S.method.energyTitle}</h2>
@@ -509,7 +509,7 @@ export default function Home() {
         )}
 
         {step === "methodTime" && (
-          <ScreenShell key="methodTime" onHome={goHome} onBack={goBack} eyebrow={S.method.eyebrow} progress={{ total: 3, current: 1 }}>
+          <ScreenShell key="methodTime" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} eyebrow={S.method.eyebrow} progress={{ total: 3, current: 1 }}>
             <h2 className="text-lg font-bold text-warm mb-4">{S.method.timeTitle}</h2>
             <div className="flex flex-col gap-3">
               {S.method.timeOptions.map((label, i) => (
@@ -520,7 +520,7 @@ export default function Home() {
         )}
 
         {step === "methodIngredients" && (
-          <ScreenShell key="methodIngredients" onHome={goHome} onBack={goBack} eyebrow={S.method.eyebrow} progress={{ total: 3, current: 2 }}>
+          <ScreenShell key="methodIngredients" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} eyebrow={S.method.eyebrow} progress={{ total: 3, current: 2 }}>
             <h2 className="text-lg font-bold text-warm mb-4">{S.method.ingredientsTitle}</h2>
             <div className="flex flex-col gap-3">
               {S.method.ingredientsOptions.map((label, i) => (
@@ -538,7 +538,7 @@ export default function Home() {
         )}
 
         {step === "intro" && (
-          <ScreenShell key="intro" onHome={goHome} onBack={goBack} progress={{ total: QUESTION_STEPS.length, current: 0 }}>
+          <ScreenShell key="intro" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} progress={{ total: QUESTION_STEPS.length, current: 0 }}>
             <div className="flex flex-col items-center text-center mt-8">
               <div className="w-20 h-20 rounded-full bg-surface border border-orange/30 flex items-center justify-center mb-6 shadow-glow">
                 <Logo size={36} />
@@ -550,7 +550,7 @@ export default function Home() {
         )}
 
         {step === "people" && (
-          <ScreenShell key="people" onHome={goHome} onBack={goBack} progress={{ total: QUESTION_STEPS.length, current: 1 }}>
+          <ScreenShell key="people" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} progress={{ total: QUESTION_STEPS.length, current: 1 }}>
             <h1 className="text-2xl font-extrabold text-warm mb-6">{S.people.title}</h1>
             <div className="flex flex-col gap-3">
               {S.people.options.map((label, i) => (
@@ -561,7 +561,7 @@ export default function Home() {
         )}
 
         {step === "children" && (
-          <ScreenShell key="children" onHome={goHome} onBack={goBack} progress={{ total: QUESTION_STEPS.length, current: 2 }}>
+          <ScreenShell key="children" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} progress={{ total: QUESTION_STEPS.length, current: 2 }}>
             <h1 className="text-2xl font-extrabold text-warm mb-6">{S.children.title}</h1>
             <div className="flex flex-col gap-3">
               <ChoiceCard label={S.children.yes} selected={hasChildren} onClick={() => { setHasChildren(true); goTo("childrenAges"); }} />
@@ -571,7 +571,7 @@ export default function Home() {
         )}
 
         {step === "childrenAges" && (
-          <ScreenShell key="childrenAges" onHome={goHome} onBack={goBack} progress={{ total: QUESTION_STEPS.length, current: 2 }}>
+          <ScreenShell key="childrenAges" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} progress={{ total: QUESTION_STEPS.length, current: 2 }}>
             <h1 className="text-2xl font-extrabold text-warm mb-6">{S.children.agesTitle}</h1>
             <div className="flex flex-col gap-3 mb-8">
               {S.children.ages.map((label, i) => {
@@ -592,7 +592,7 @@ export default function Home() {
         )}
 
         {step === "time" && (
-          <ScreenShell key="time" onHome={goHome} onBack={goBack} progress={{ total: QUESTION_STEPS.length, current: 3 }}>
+          <ScreenShell key="time" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} progress={{ total: QUESTION_STEPS.length, current: 3 }}>
             <h1 className="text-2xl font-extrabold text-warm mb-6">{S.time.title}</h1>
             <div className="flex flex-col gap-3">
               {S.time.options.map((label, i) => (
@@ -603,7 +603,7 @@ export default function Home() {
         )}
 
         {step === "ingredients" && (
-          <ScreenShell key="ingredients" onHome={goHome} onBack={goBack} progress={{ total: QUESTION_STEPS.length, current: 4 }}>
+          <ScreenShell key="ingredients" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} progress={{ total: QUESTION_STEPS.length, current: 4 }}>
             <h1 className="text-2xl font-extrabold text-warm mb-6">{S.ingredients.title}</h1>
             <IngredientChips
               value={availableIngredients}
@@ -617,7 +617,7 @@ export default function Home() {
         )}
 
         {step === "shoppingPref" && (
-          <ScreenShell key="shoppingPref" onHome={goHome} onBack={goBack} progress={{ total: QUESTION_STEPS.length, current: 5 }}>
+          <ScreenShell key="shoppingPref" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} progress={{ total: QUESTION_STEPS.length, current: 5 }}>
             <h1 className="text-2xl font-extrabold text-warm mb-6">{S.shoppingPref.title}</h1>
             <div className="flex flex-col gap-3">
               {S.shoppingPref.options.map((label, i) => (
@@ -628,7 +628,7 @@ export default function Home() {
         )}
 
         {step === "dietary" && (
-          <ScreenShell key="dietary" onHome={goHome} onBack={goBack} progress={{ total: QUESTION_STEPS.length, current: 6 }}>
+          <ScreenShell key="dietary" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} progress={{ total: QUESTION_STEPS.length, current: 6 }}>
             <h1 className="text-2xl font-extrabold text-warm mb-6">{S.dietary.title}</h1>
             <div className="flex flex-col gap-3 mb-8">
               {S.dietary.options.map((label, i) => {
@@ -655,7 +655,7 @@ export default function Home() {
         )}
 
         {step === "preference" && (
-          <ScreenShell key="preference" onHome={goHome} onBack={goBack} progress={{ total: QUESTION_STEPS.length, current: 7 }}>
+          <ScreenShell key="preference" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} progress={{ total: QUESTION_STEPS.length, current: 7 }}>
             <h1 className="text-2xl font-extrabold text-warm mb-6">{S.preference.title}</h1>
             <div className="flex flex-col gap-3">
               {S.preference.options.map((label, i) => (
@@ -666,7 +666,7 @@ export default function Home() {
         )}
 
         {step === "goal" && (
-          <ScreenShell key="goal" onHome={goHome} onBack={goBack} progress={{ total: QUESTION_STEPS.length, current: 8 }}>
+          <ScreenShell key="goal" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} progress={{ total: QUESTION_STEPS.length, current: 8 }}>
             <h1 className="text-2xl font-extrabold text-warm mb-6">{S.goal.title}</h1>
             <div className="flex flex-col gap-3">
               {S.goal.options.map((label, i) => (
@@ -677,7 +677,7 @@ export default function Home() {
         )}
 
         {step === "favoriteHow" && (
-          <ScreenShell key="favoriteHow" onHome={goHome} onBack={goBack}>
+          <ScreenShell key="favoriteHow" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack}>
             <h1 className="text-2xl font-extrabold text-warm mb-6">{S.favorite.howTitle}</h1>
             <div className="flex flex-col gap-3">
               <ChoiceCard label={S.favorite.typePaste} emoji="📝" onClick={() => goTo("favoriteInput")} />
@@ -689,7 +689,7 @@ export default function Home() {
         )}
 
         {step === "favoriteInput" && (
-          <ScreenShell key="favoriteInput" onHome={goHome} onBack={goBack}>
+          <ScreenShell key="favoriteInput" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack}>
             <h1 className="text-2xl font-extrabold text-warm mb-6">{S.favorite.typePaste}</h1>
             <textarea
               value={favoriteText}
@@ -703,7 +703,7 @@ export default function Home() {
         )}
 
         {step === "favoriteAdapt" && (
-          <ScreenShell key="favoriteAdapt" onHome={goHome} onBack={goBack}>
+          <ScreenShell key="favoriteAdapt" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack}>
             <h1 className="text-2xl font-extrabold text-warm mb-6">{S.favorite.adaptTitle}</h1>
             <div className="flex flex-col gap-3 mb-8">
               {S.favorite.adaptOptions.map((label, i) => {
@@ -733,7 +733,7 @@ export default function Home() {
         )}
 
         {step === "result" && result && (
-          <ScreenShell key="result" onHome={goHome}>
+          <ScreenShell key="result" onHome={goHome} onBack={() => setStep("mode")} backLabel={S.ui.backWord} appName={S.appName}>
             <ResultScreen
               result={result}
               strings={S}
@@ -745,7 +745,7 @@ export default function Home() {
         )}
 
         {step === "reject" && (
-          <ScreenShell key="reject" onHome={goHome} onBack={goBack}>
+          <ScreenShell key="reject" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack}>
             <h1 className="text-xl font-extrabold text-warm mb-6">{S.reject.message}</h1>
             <div className="flex flex-col gap-3">
               {S.reject.options.map((opt) => (
@@ -756,13 +756,13 @@ export default function Home() {
         )}
 
         {step === "why" && result && (
-          <ScreenShell key="why" onHome={goHome} onBack={goBack}>
+          <ScreenShell key="why" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack}>
             <WhySelected reasons={result.whySelected} title={S.why.title} ctaLabel={S.result.viewRecipe} onNext={() => goTo("detail")} />
           </ScreenShell>
         )}
 
         {step === "detail" && result && (
-          <ScreenShell key="detail" onHome={goHome} onBack={goBack} wide>
+          <ScreenShell key="detail" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} wide>
             <RecipeDetail
               result={result}
               strings={S}
@@ -774,7 +774,7 @@ export default function Home() {
         )}
 
         {step === "optionalMenu" && (
-          <ScreenShell key="optionalMenu" onHome={goHome} onBack={goBack}>
+          <ScreenShell key="optionalMenu" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack}>
             <OptionalMenuGate
               pendingModule={pendingModule}
               setPendingModule={setPendingModule}
@@ -794,25 +794,25 @@ export default function Home() {
         )}
 
         {step === "shoppingListModule" && result && (
-          <ScreenShell key="shoppingListModule" onHome={goHome} onBack={() => setStep("optionalMenu")}>
+          <ScreenShell key="shoppingListModule" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={() => setStep("optionalMenu")}>
             <ShoppingListModule shoppingList={result.shoppingList} strings={S} onCopy={copyToClipboard} onBack={() => setStep("optionalMenu")} />
           </ScreenShell>
         )}
 
         {step === "nutritionModule" && result && (
-          <ScreenShell key="nutritionModule" onHome={goHome} onBack={() => setStep("optionalMenu")}>
+          <ScreenShell key="nutritionModule" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={() => setStep("optionalMenu")}>
             <NutritionModule result={result} strings={S} onBack={() => setStep("optionalMenu")} />
           </ScreenShell>
         )}
 
         {step === "savingsModule" && result && (
-          <ScreenShell key="savingsModule" onHome={goHome} onBack={() => setStep("optionalMenu")}>
+          <ScreenShell key="savingsModule" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={() => setStep("optionalMenu")}>
             <SavingsModule result={result} strings={S} onBack={() => setStep("optionalMenu")} />
           </ScreenShell>
         )}
 
         {step === "finalCta" && (
-          <ScreenShell key="finalCta" onHome={goHome}>
+          <ScreenShell key="finalCta" onHome={goHome} onBack={() => setStep("mode")} backLabel={S.ui.backWord} appName={S.appName}>
             <FinalCta
               S={S}
               onTryAnother={() => {
@@ -824,7 +824,7 @@ export default function Home() {
         )}
 
         {step === "weeklyPeople" && (
-          <ScreenShell key="weeklyPeople" onHome={goHome} onBack={goBack}>
+          <ScreenShell key="weeklyPeople" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack}>
             <h1 className="text-2xl font-extrabold text-warm mb-1">{S.weeklyPlanner.title}</h1>
             <p className="text-muted text-sm mb-6">{S.weeklyPlanner.subtitle}</p>
             <h2 className="text-lg font-bold text-warm mb-4">{S.people.title}</h2>
@@ -847,7 +847,7 @@ export default function Home() {
         )}
 
         {step === "weeklyResult" && weeklyPlan && (
-          <ScreenShell key="weeklyResult" onHome={goHome} onBack={goBack}>
+          <ScreenShell key="weeklyResult" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack}>
             <WeeklyPlanView
               plan={weeklyPlan}
               title={S.weeklyPlanner.title}
@@ -861,7 +861,7 @@ export default function Home() {
         )}
 
         {step === "weeklyDayDetail" && weeklyPlan && (
-          <ScreenShell key="weeklyDayDetail" onHome={goHome} onBack={() => setStep("weeklyResult")} wide>
+          <ScreenShell key="weeklyDayDetail" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={() => setStep("weeklyResult")} wide>
             <RecipeDetail
               result={weeklyPlan.days[weeklyDayIndex].result}
               strings={S}
@@ -873,13 +873,13 @@ export default function Home() {
         )}
 
         {step === "weeklyShopping" && weeklyPlan && (
-          <ScreenShell key="weeklyShopping" onHome={goHome} onBack={() => setStep("weeklyResult")}>
+          <ScreenShell key="weeklyShopping" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={() => setStep("weeklyResult")}>
             <ShoppingListModule shoppingList={weeklyPlan.shoppingList} strings={S} onCopy={copyToClipboard} onBack={() => setStep("weeklyResult")} />
           </ScreenShell>
         )}
 
         {step === "guide" && (
-          <ScreenShell key="guide" onHome={goHome} onBack={goBack}>
+          <ScreenShell key="guide" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack}>
             <GuideChapter
               chapter={S.guide.chapters[guideChapterIndex] as any}
               index={guideChapterIndex}
@@ -889,12 +889,14 @@ export default function Home() {
               onNext={() => setGuideChapterIndex((i) => Math.min(S.guide.chapters.length - 1, i + 1))}
               onDone={() => goTo("mode")}
               doneLabel={S.guide.cta}
+              prevLabel={S.ui.backWord}
+              nextLabel={S.ui.next.replace(" →", "")}
             />
           </ScreenShell>
         )}
 
         {step === "myRecipes" && (
-          <ScreenShell key="myRecipes" onHome={goHome} onBack={goBack}>
+          <ScreenShell key="myRecipes" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack}>
             <SavedRecipesList
               favorites={favorites}
               title={S.savedRecipes.title}

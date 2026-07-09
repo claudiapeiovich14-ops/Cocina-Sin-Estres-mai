@@ -9,6 +9,8 @@ export function ScreenShell({
   children,
   onBack,
   onHome,
+  backLabel = "Volver",
+  appName = "Cocina Sin Estrés",
   progress,
   eyebrow,
   wide = false,
@@ -16,6 +18,8 @@ export function ScreenShell({
   children: ReactNode;
   onBack?: () => void;
   onHome?: () => void;
+  backLabel?: string;
+  appName?: string;
   progress?: { total: number; current: number };
   eyebrow?: string;
   wide?: boolean;
@@ -23,23 +27,24 @@ export function ScreenShell({
   return (
     <div className="min-h-screen flex flex-col items-center px-5 py-8 relative overflow-hidden">
       <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-orange/20 blur-[110px]" />
-      <div className="w-full max-w-md flex items-center justify-between mb-8 relative z-10">
+      <div className="w-full max-w-md flex items-center justify-between mb-8 relative z-10 gap-2">
         <button
           onClick={onBack}
-          className={`text-muted text-sm font-medium transition-opacity ${onBack ? "opacity-100 hover:text-warm" : "opacity-0 pointer-events-none"}`}
+          className={`flex items-center gap-1.5 text-warm text-sm font-bold px-2.5 py-2 -ml-2.5 rounded-full transition-colors ${onBack ? "opacity-100 hover:bg-white/5" : "opacity-0 pointer-events-none"}`}
         >
-          ←
+          <span className="text-lg leading-none">←</span>
+          <span>{backLabel}</span>
         </button>
         <button
           onClick={onHome}
           disabled={!onHome}
-          className="flex items-center gap-2 disabled:pointer-events-none"
+          className="flex items-center gap-2 disabled:pointer-events-none flex-shrink-0"
           aria-label="Volver al inicio"
         >
-          <Logo size={20} />
-          <span className="text-sm font-bold tracking-wide text-warm">Chef AI</span>
+          <Logo size={28} />
+          <span className="text-sm font-bold tracking-wide text-warm hidden sm:inline">{appName}</span>
         </button>
-        <div className="w-6" />
+        <div className="w-6 flex-shrink-0" />
       </div>
 
       {progress && (
