@@ -271,6 +271,8 @@ export function buildResult(recipe: RecipeTemplate, input: ChefAIInput): ChefAIR
     caloriesPerServing: recipe.baseCalories,
     nutritionScore,
     macros: { protein: `${proteinG}g`, carbs: `${carbsG}g`, fat: `${fatG}g` },
+    healthBenefits: recipe.healthBenefits[lang],
+    pairing: recipe.pairing[lang],
     whySelected: buildWhySelected(recipe, input, missing.length, lang),
     ingredients,
     missingIngredients: missingWithPrices,

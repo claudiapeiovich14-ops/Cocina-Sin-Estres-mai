@@ -22,6 +22,14 @@ export interface RecipeTemplate {
   ingredients: { name: string; category: string; qty: string }[];
   steps: { es: string[]; en: string[] };
   tips: { es: string[]; en: string[] };
+  healthBenefits: { es: string[]; en: string[] };
+  pairing: { es: PairingSuggestion; en: PairingSuggestion };
+}
+
+export interface PairingSuggestion {
+  side: string;
+  dessert: string;
+  drink: string;
 }
 
 export const recipes: RecipeTemplate[] = [
@@ -68,6 +76,14 @@ export const recipes: RecipeTemplate[] = [
       es: ["Fuego fuerte todo el tiempo: eso le da el sabor a salteado.", "Si no tenés zapallito, cualquier verdura crocante funciona."],
       en: ["Keep the heat high the whole time — that's what gives it the stir-fry flavor.", "No zucchini? Any crisp vegetable works."],
     },
+    healthBenefits: {
+      es: ["Alta en proteína magra para mantener la energía todo el día.", "Los vegetales salteados aportan vitamina C y fibra."],
+      en: ["High in lean protein to keep your energy steady all day.", "The stir-fried vegetables add vitamin C and fiber."],
+    },
+    pairing: {
+      es: { side: "Pepino en rodajas con sésamo.", dessert: "Gajos de naranja o helado de mango.", drink: "Un vino blanco seco (Sauvignon Blanc) o, sin alcohol, limonada bien fría." },
+      en: { side: "Sliced cucumber with sesame.", dessert: "Orange wedges or mango sorbet.", drink: "A dry white wine (Sauvignon Blanc), or fresh lemonade if you skip alcohol." },
+    },
   },
   {
     id: "mediterranean-chicken-bowl",
@@ -110,6 +126,14 @@ export const recipes: RecipeTemplate[] = [
       es: ["Preparalo el doble y usalo de almuerzo al día siguiente.", "El limón exprimido arriba le da un toque fresco."],
       en: ["Double the batch and use it for lunch tomorrow.", "A squeeze of lemon on top adds a fresh touch."],
     },
+    healthBenefits: {
+      es: ["Rica en proteína magra y grasas saludables gracias al aceite de oliva.", "El tomate aporta licopeno y vitamina C, buenos antioxidantes."],
+      en: ["Rich in lean protein and healthy fats from the olive oil.", "Tomato adds lycopene and vitamin C, both good antioxidants."],
+    },
+    pairing: {
+      es: { side: "Hummus con pan pita.", dessert: "Yogur con miel y nueces.", drink: "Vino blanco fresco o, sin alcohol, limonada con menta." },
+      en: { side: "Hummus with pita bread.", dessert: "Yogurt with honey and walnuts.", drink: "A crisp white wine, or mint lemonade if you skip alcohol." },
+    },
   },
   {
     id: "veggie-pasta",
@@ -149,6 +173,14 @@ export const recipes: RecipeTemplate[] = [
     tips: {
       es: ["Guardá un poco del agua de cocción, ayuda a que la salsa se integre.", "Cualquier vegetal que tengas a mano sirve acá."],
       en: ["Save a splash of pasta water — it helps everything come together.", "Any vegetable you have on hand works here."],
+    },
+    healthBenefits: {
+      es: ["Los vegetales de estación suman fibra, vitamina C y antioxidantes.", "El queso aporta calcio y proteína extra."],
+      en: ["Seasonal vegetables add fiber, vitamin C and antioxidants.", "Cheese adds calcium and extra protein."],
+    },
+    pairing: {
+      es: { side: "Ensalada verde con vinagreta.", dessert: "Fruta fresca de estación.", drink: "Vino blanco liviano o agua saborizada con frutos rojos." },
+      en: { side: "Green salad with vinaigrette.", dessert: "Fresh seasonal fruit.", drink: "A light white wine, or berry-infused water." },
     },
   },
   {
@@ -190,6 +222,14 @@ export const recipes: RecipeTemplate[] = [
       es: ["Un chorrito de lima al final le cambia todo.", "A los chicos les gusta armar los suyos."],
       en: ["A squeeze of lime at the end changes everything.", "Kids love building their own."],
     },
+    healthBenefits: {
+      es: ["La carne aporta hierro y proteína de alto valor biológico.", "Es una opción rica y satisfactoria — date el gusto, pero no la repitas todos los días."],
+      en: ["Beef provides iron and high-quality protein.", "A satisfying, flavorful option — enjoy it, but not an everyday staple."],
+    },
+    pairing: {
+      es: { side: "Guacamole y pico de gallo.", dessert: "Flan o fruta con crema.", drink: "Una cerveza clara o, sin alcohol, agua de jamaica bien fría." },
+      en: { side: "Guacamole and pico de gallo.", dessert: "Flan or fruit with cream.", drink: "A light beer, or chilled hibiscus water if you skip alcohol." },
+    },
   },
   {
     id: "salmon-veggies",
@@ -228,6 +268,14 @@ export const recipes: RecipeTemplate[] = [
     tips: {
       es: ["No te pases de cocción: el pescado sigue cocinándose fuera del horno.", "El limón fresco es clave acá."],
       en: ["Don't overcook it — fish keeps cooking after it leaves the oven.", "Fresh lemon is key here."],
+    },
+    healthBenefits: {
+      es: ["El pescado aporta Omega-3, muy bueno para el corazón y el cerebro.", "Bajo en carbohidratos y rico en proteína magra."],
+      en: ["Fish provides Omega-3s, great for heart and brain health.", "Low in carbs and rich in lean protein."],
+    },
+    pairing: {
+      es: { side: "Puré de coliflor o quinoa.", dessert: "Ensalada de frutas cítricas.", drink: "Un vino blanco (Chardonnay) o agua con pepino y menta." },
+      en: { side: "Cauliflower mash or quinoa.", dessert: "Citrus fruit salad.", drink: "A white wine (Chardonnay), or cucumber-mint water." },
     },
   },
   {
@@ -268,6 +316,14 @@ export const recipes: RecipeTemplate[] = [
       es: ["Rinde para varios días y mejora al día siguiente.", "Congelá porciones individuales."],
       en: ["It makes plenty and tastes even better the next day.", "Freeze it in individual portions."],
     },
+    healthBenefits: {
+      es: ["Las lentejas son ricas en hierro, fibra y proteína vegetal.", "Ayudan a mantenerte saciada por más tiempo."],
+      en: ["Lentils are rich in iron, fiber and plant protein.", "They help keep you full for longer."],
+    },
+    pairing: {
+      es: { side: "Pan casero o tostadas.", dessert: "Manzana asada con canela.", drink: "Un vino tinto liviano o té de jengibre." },
+      en: { side: "Homemade bread or toast.", dessert: "Baked apple with cinnamon.", drink: "A light red wine, or ginger tea." },
+    },
   },
   {
     id: "egg-fried-rice",
@@ -306,6 +362,14 @@ export const recipes: RecipeTemplate[] = [
     tips: {
       es: ["Arroz frío del día anterior queda mejor que recién hecho.", "Sumá cualquier verdura que tengas guardada."],
       en: ["Day-old cold rice works better than fresh.", "Toss in any vegetable scraps you have."],
+    },
+    healthBenefits: {
+      es: ["El huevo aporta proteína completa y vitamina D.", "Es ideal para aprovechar sobras rápido — perfecta de vez en cuando, no pensada para el día a día."],
+      en: ["Eggs provide complete protein and vitamin D.", "A great way to use up leftovers fast — perfect once in a while, not an everyday staple."],
+    },
+    pairing: {
+      es: { side: "Ensalada de pepino y zanahoria.", dessert: "Fruta fresca, para equilibrar.", drink: "Té verde o agua con limón." },
+      en: { side: "Cucumber and carrot salad.", dessert: "Fresh fruit, to balance the meal.", drink: "Green tea or lemon water." },
     },
   },
   {
@@ -346,6 +410,14 @@ export const recipes: RecipeTemplate[] = [
       es: ["Si tenés leche de coco, sumala para una versión más cremosa.", "Acompañá con arroz o pan plano."],
       en: ["If you have coconut milk, add it for a creamier version.", "Serve with rice or flatbread."],
     },
+    healthBenefits: {
+      es: ["Los garbanzos aportan proteína vegetal, fibra y hierro.", "Su fibra ayuda a mantener el azúcar en sangre más estable."],
+      en: ["Chickpeas provide plant protein, fiber and iron.", "Their fiber helps keep blood sugar more stable."],
+    },
+    pairing: {
+      es: { side: "Arroz basmati o pan naan.", dessert: "Yogur con miel.", drink: "Té chai o jugo de mango." },
+      en: { side: "Basmati rice or naan bread.", dessert: "Yogurt with honey.", drink: "Chai tea or mango juice." },
+    },
   },
   {
     id: "turkey-meatballs",
@@ -384,6 +456,14 @@ export const recipes: RecipeTemplate[] = [
     tips: {
       es: ["Hacé el doble y congelá crudas para otro día.", "Servilas con puré para que sea más apto para chicos."],
       en: ["Double the batch and freeze raw ones for later.", "Serve with mashed potatoes to make it extra kid-friendly."],
+    },
+    healthBenefits: {
+      es: ["Alta en proteína, ideal para el crecimiento de los chicos.", "Horneadas en vez de fritas: bastante menos grasa que la versión tradicional."],
+      en: ["High in protein, great for kids' growth.", "Baked instead of fried — noticeably less fat than the traditional version."],
+    },
+    pairing: {
+      es: { side: "Puré de papas o ensalada verde.", dessert: "Gelatina de frutas.", drink: "Vino tinto liviano o jugo de uva." },
+      en: { side: "Mashed potatoes or green salad.", dessert: "Fruit gelatin.", drink: "A light red wine, or grape juice." },
     },
   },
   {
@@ -425,6 +505,14 @@ export const recipes: RecipeTemplate[] = [
       es: ["Perfecta para calor: liviana y refrescante.", "Podés preparar el pollo de más para el día siguiente."],
       en: ["Perfect for hot days: light and refreshing.", "Grill extra chicken for tomorrow's lunch."],
     },
+    healthBenefits: {
+      es: ["Fresca y liviana: aporta proteína magra y grasas saludables del aceite de oliva.", "El tomate y la cebolla suman antioxidantes."],
+      en: ["Fresh and light: lean protein plus healthy fats from the olive oil.", "Tomato and onion add antioxidants."],
+    },
+    pairing: {
+      es: { side: "Pan pita tostado.", dessert: "Yogur griego con miel.", drink: "Vino blanco fresco o limonada." },
+      en: { side: "Toasted pita bread.", dessert: "Greek yogurt with honey.", drink: "A crisp white wine, or lemonade." },
+    },
   },
   {
     id: "tofu-veggie-stirfry",
@@ -463,6 +551,14 @@ export const recipes: RecipeTemplate[] = [
     tips: {
       es: ["Secá bien el tofu antes de dorarlo para que quede crocante.", "Fuego fuerte, movimiento constante."],
       en: ["Pat the tofu dry before frying for a crispier bite.", "High heat, constant movement."],
+    },
+    healthBenefits: {
+      es: ["El tofu aporta proteína vegetal completa y calcio.", "100% vegetal y bajo en grasas saturadas."],
+      en: ["Tofu provides complete plant protein and calcium.", "Fully plant-based and low in saturated fat."],
+    },
+    pairing: {
+      es: { side: "Arroz integral.", dessert: "Fruta fresca.", drink: "Té verde o agua de coco." },
+      en: { side: "Brown rice.", dessert: "Fresh fruit.", drink: "Green tea or coconut water." },
     },
   },
   {
@@ -503,6 +599,14 @@ export const recipes: RecipeTemplate[] = [
       es: ["Una sola fuente, casi nada para lavar.", "Sobra para el almuerzo de mañana."],
       en: ["One tray, almost nothing to wash.", "Leftovers make a great lunch tomorrow."],
     },
+    healthBenefits: {
+      es: ["El pollo aporta proteína magra; horneado en vez de frito.", "La papa suma potasio y energía de buena calidad."],
+      en: ["Chicken provides lean protein; baked instead of fried.", "Potatoes add potassium and good-quality energy."],
+    },
+    pairing: {
+      es: { side: "Ensalada verde.", dessert: "Compota de manzana.", drink: "Vino tinto liviano o jugo de arándanos." },
+      en: { side: "Green salad.", dessert: "Apple compote.", drink: "A light red wine, or cranberry juice." },
+    },
   },
   {
     id: "quesadillas",
@@ -538,6 +642,14 @@ export const recipes: RecipeTemplate[] = [
     tips: {
       es: ["Sumá pollo si tenés de sobra.", "Acompañá con algo fresco al costado."],
       en: ["Add leftover chicken if you have some.", "Serve with something fresh on the side."],
+    },
+    healthBenefits: {
+      es: ["El queso aporta calcio y proteína.", "Es rápida y rica — mejor acompañada de algo fresco, no pensada para comer todos los días."],
+      en: ["Cheese adds calcium and protein.", "Quick and tasty — best paired with something fresh, not an everyday choice."],
+    },
+    pairing: {
+      es: { side: "Guacamole y pico de gallo.", dessert: "Fruta fresca, para equilibrar.", drink: "Agua de jamaica o limonada." },
+      en: { side: "Guacamole and pico de gallo.", dessert: "Fresh fruit, to balance the meal.", drink: "Hibiscus water or lemonade." },
     },
   },
   {
@@ -578,6 +690,14 @@ export const recipes: RecipeTemplate[] = [
       es: ["Serví con pan para mojar en la salsa.", "La yema tiene que quedar líquida."],
       en: ["Serve with bread for dipping.", "The yolk should stay runny."],
     },
+    healthBenefits: {
+      es: ["Los huevos aportan proteína completa y vitamina D.", "El tomate cocido potencia el licopeno, un antioxidante fuerte."],
+      en: ["Eggs provide complete protein and vitamin D.", "Cooked tomato boosts lycopene, a powerful antioxidant."],
+    },
+    pairing: {
+      es: { side: "Pan árabe o tostadas.", dessert: "Fruta fresca.", drink: "Té de menta o jugo de naranja." },
+      en: { side: "Flatbread or toast.", dessert: "Fresh fruit.", drink: "Mint tea or orange juice." },
+    },
   },
   {
     id: "beef-rice-bowl",
@@ -617,6 +737,14 @@ export const recipes: RecipeTemplate[] = [
       es: ["Un huevo frito arriba lo lleva a otro nivel.", "Sumá cualquier vegetal salteado que tengas."],
       en: ["A fried egg on top takes it to another level.", "Add any sautéed vegetable you have."],
     },
+    healthBenefits: {
+      es: ["La carne aporta hierro y proteína de alto valor biológico.", "Sumale vegetales salteados al costado para agregar fibra y vitaminas."],
+      en: ["Beef provides iron and high-quality protein.", "Add sautéed vegetables on the side for extra fiber and vitamins."],
+    },
+    pairing: {
+      es: { side: "Vegetales salteados.", dessert: "Fruta fresca.", drink: "Una cerveza o té helado." },
+      en: { side: "Sautéed vegetables.", dessert: "Fresh fruit.", drink: "A beer, or iced tea." },
+    },
   },
   {
     id: "shrimp-zoodles",
@@ -654,6 +782,14 @@ export const recipes: RecipeTemplate[] = [
     tips: {
       es: ["No lo cocines de más, el zapallito suelta agua rápido.", "Servilo apenas esté listo."],
       en: ["Don't overcook it — zucchini releases water fast.", "Serve it right away."],
+    },
+    healthBenefits: {
+      es: ["Los camarones son bajos en grasa y ricos en proteína y yodo.", "El zapallito en lugar de fideos reduce bastante los carbohidratos."],
+      en: ["Shrimp is low in fat and rich in protein and iodine.", "Zucchini instead of pasta cuts down significantly on carbs."],
+    },
+    pairing: {
+      es: { side: "Ensalada verde liviana.", dessert: "Sorbete de limón.", drink: "Vino blanco (Sauvignon Blanc) o agua con pepino." },
+      en: { side: "Light green salad.", dessert: "Lemon sorbet.", drink: "A white wine (Sauvignon Blanc), or cucumber water." },
     },
   },
   {
@@ -693,6 +829,14 @@ export const recipes: RecipeTemplate[] = [
       es: ["Un toque de jengibre le da vida.", "Se congela perfecto en porciones."],
       en: ["A touch of ginger brings it to life.", "Freezes perfectly in portions."],
     },
+    healthBenefits: {
+      es: ["El zapallo aporta beta-caroteno, bueno para la vista y las defensas.", "Liviana y baja en calorías, ideal para la noche."],
+      en: ["Pumpkin provides beta-carotene, great for eyesight and immunity.", "Light and low-calorie, perfect for dinner."],
+    },
+    pairing: {
+      es: { side: "Pan crocante.", dessert: "Peras al horno con canela.", drink: "Vino blanco o té de jengibre." },
+      en: { side: "Crusty bread.", dessert: "Baked pears with cinnamon.", drink: "A white wine, or ginger tea." },
+    },
   },
   {
     id: "chicken-caesar-wrap",
@@ -730,6 +874,14 @@ export const recipes: RecipeTemplate[] = [
     tips: {
       es: ["Perfecto para usar pollo que sobró.", "Envolvelo en papel para que no se abra."],
       en: ["Perfect for using leftover chicken.", "Wrap it in paper so it holds together."],
+    },
+    healthBenefits: {
+      es: ["Buena fuente de proteína magra para reponer energía.", "Elegí una tortilla integral si podés, para sumar más fibra."],
+      en: ["A good source of lean protein to refuel.", "Choose a whole-wheat wrap if you can, for extra fiber."],
+    },
+    pairing: {
+      es: { side: "Bastones de zanahoria y apio.", dessert: "Fruta fresca.", drink: "Limonada o agua saborizada." },
+      en: { side: "Carrot and celery sticks.", dessert: "Fresh fruit.", drink: "Lemonade or infused water." },
     },
   },
 ];

@@ -103,6 +103,13 @@ export const strings = {
     dashboard: {
       title: "Tu método, paso a paso",
       subtitle: "No es una colección de recetas. Es una forma guiada de resolver la comida diaria.",
+      methodBanner: {
+        eyebrow: "La parte educativa",
+        title: "📖 Aprendé el Método",
+        subtitle: "5 capítulos cortos: por qué la comida diaria estresa y cómo resolverlo para siempre.",
+        cta: "Recorrer el método →",
+      },
+      quickTitle: "O andá directo a lo que necesitás",
       sections: [
         {
           key: "today",
@@ -120,24 +127,6 @@ export const strings = {
             { key: "weeklyPlanner", emoji: "📅", label: "Planificador semanal" },
             { key: "shoppingList", emoji: "🛒", label: "Lista de compras inteligente" },
             { key: "portions", emoji: "🍽", label: "Cálculo por comensales" },
-          ],
-        },
-        {
-          key: "better",
-          title: "Comer mejor sin complicarte",
-          cards: [
-            { key: "nutrition", emoji: "🥗", label: "Valoración nutricional" },
-            { key: "calories", emoji: "🔥", label: "Calorías estimadas" },
-            { key: "tips", emoji: "💡", label: "Consejos de cocina simple" },
-          ],
-        },
-        {
-          key: "learn",
-          title: "Aprender el método",
-          cards: [
-            { key: "chapter0", emoji: "📖", label: "Por qué la comida diaria estresa" },
-            { key: "chapter1", emoji: "📖", label: "Los 4 errores que te hacen improvisar" },
-            { key: "chapter3", emoji: "📖", label: "Cómo planificar sin volverte esclava del menú" },
           ],
         },
       ],
@@ -209,6 +198,9 @@ export const strings = {
     },
     result: {
       title: "Ya resolví tu comida.",
+      congrats: "¡Elegiste bien! 🎉",
+      solvedIn: "Resolviste tu menú en {s} segundos ⚡",
+      solvedInFooter: "Así de rápido es cocinar cuando hay orden.",
       servings: "porciones",
       stepsLabel: "Preparación",
       timeLabel: "Tiempo",
@@ -224,6 +216,12 @@ export const strings = {
     },
     why: {
       title: "Por qué elegí esto",
+    },
+    pairing: {
+      title: "Cómo disfrutarlo",
+      side: "Acompañalo con",
+      dessert: "De postre",
+      drink: "Para tomar",
     },
     actions: {
       copyRecipe: "📋 Copiar receta",
@@ -276,6 +274,7 @@ export const strings = {
       sugar: "Azúcar",
       sodium: "Sodio",
       score: "Puntaje nutricional",
+      benefitsTitle: "Beneficios de este plato",
     },
     savingsModule: {
       title: "Cocinar vs. delivery",
@@ -341,6 +340,17 @@ export const strings = {
             "1 opción libre.",
           ],
           quote: "Un buen menú semanal no te encierra. Te libera de decidir cansada.",
+        },
+        {
+          title: "Orden en la cocina = comida más rápida",
+          structure: [
+            "Vaciá y limpiá la heladera un día fijo por semana, antes de comprar.",
+            "Guardá cada cosa siempre en el mismo lugar: no perdés tiempo buscando.",
+            "Cociná en lotes: doblá una receta y congelá la mitad en porciones individuales.",
+            "Etiquetá lo que congelás con la fecha, así no se acumula sin control.",
+            "Comprá pensando en la semana completa, no comida por comida.",
+          ],
+          quote: "Cuando la cocina tiene orden, decidir qué cocinar deja de ser un esfuerzo.",
         },
       ],
       cta: "Volver al método",
@@ -468,6 +478,13 @@ export const strings = {
     dashboard: {
       title: "Your method, step by step",
       subtitle: "This isn't a recipe collection. It's a guided way to solve daily meals.",
+      methodBanner: {
+        eyebrow: "The learning part",
+        title: "📖 Learn the Method",
+        subtitle: "5 short chapters: why daily meals stress you out, and how to fix it for good.",
+        cta: "Go through the method →",
+      },
+      quickTitle: "Or jump straight to what you need",
       sections: [
         {
           key: "today",
@@ -485,24 +502,6 @@ export const strings = {
             { key: "weeklyPlanner", emoji: "📅", label: "Weekly planner" },
             { key: "shoppingList", emoji: "🛒", label: "Smart shopping list" },
             { key: "portions", emoji: "🍽", label: "Servings calculator" },
-          ],
-        },
-        {
-          key: "better",
-          title: "Eat better without complicating things",
-          cards: [
-            { key: "nutrition", emoji: "🥗", label: "Nutrition score" },
-            { key: "calories", emoji: "🔥", label: "Estimated calories" },
-            { key: "tips", emoji: "💡", label: "Simple cooking tips" },
-          ],
-        },
-        {
-          key: "learn",
-          title: "Learn the method",
-          cards: [
-            { key: "chapter0", emoji: "📖", label: "Why daily meals cause stress" },
-            { key: "chapter1", emoji: "📖", label: "The 4 mistakes that make you improvise" },
-            { key: "chapter3", emoji: "📖", label: "How to plan without becoming a slave to the menu" },
           ],
         },
       ],
@@ -574,6 +573,9 @@ export const strings = {
     },
     result: {
       title: "I solved dinner for you.",
+      congrats: "Great choice! 🎉",
+      solvedIn: "You solved your menu in {s} seconds ⚡",
+      solvedInFooter: "That's how fast cooking gets when there's order.",
       servings: "servings",
       stepsLabel: "Steps",
       timeLabel: "Time",
@@ -589,6 +591,12 @@ export const strings = {
     },
     why: {
       title: "Why I chose this",
+    },
+    pairing: {
+      title: "How to enjoy it",
+      side: "Pair it with",
+      dessert: "For dessert",
+      drink: "To drink",
     },
     actions: {
       copyRecipe: "📋 Copy recipe",
@@ -641,6 +649,7 @@ export const strings = {
       sugar: "Sugar",
       sodium: "Sodium",
       score: "Nutrition score",
+      benefitsTitle: "Benefits of this dish",
     },
     savingsModule: {
       title: "Cooking vs. delivery",
@@ -706,6 +715,17 @@ export const strings = {
             "1 free choice.",
           ],
           quote: "A good weekly menu doesn't box you in. It frees you from deciding while tired.",
+        },
+        {
+          title: "An organized kitchen means faster meals",
+          structure: [
+            "Empty and wipe down the fridge on a fixed day each week, before you shop.",
+            "Always store things in the same spot — you stop wasting time searching.",
+            "Batch cook: double a recipe and freeze half in individual portions.",
+            "Label what you freeze with the date, so nothing piles up unchecked.",
+            "Shop for the whole week at once, not meal by meal.",
+          ],
+          quote: "When the kitchen has order, deciding what to cook stops being a chore.",
         },
       ],
       cta: "Back to the method",

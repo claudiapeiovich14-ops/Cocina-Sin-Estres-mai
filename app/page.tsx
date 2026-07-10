@@ -5,10 +5,9 @@ import { AnimatePresence } from "framer-motion";
 import { t } from "../lib/strings";
 import { countries, getIngredientSuggestions } from "../lib/countries";
 import {
-  peopleKeys, timeKeys, dietaryKeys, preferenceKeys, goalKeys,
-  shoppingPrefKeys, childrenAgesKeys, adaptOptionKeys,
+  peopleKeys, timeKeys, preferenceKeys,
+  shoppingPrefKeys, adaptOptionKeys,
   diagnosticQ1Keys, diagnosticQ2Keys, diagnosticQ3Keys,
-  energyKeys, methodTimeKeys, methodIngredientKeys,
 } from "../lib/options";
 import type {
   ChefAIInput, ChefAIResult, Lang, Mode, RejectReason,
@@ -27,12 +26,8 @@ import { Logo } from "../components/Logo";
 import { Toast } from "../components/Toast";
 import { IngredientChips } from "../components/IngredientChips";
 import { AiThinking } from "../components/AiThinking";
-import { ResultScreen } from "../components/ResultScreen";
-import { WhySelected } from "../components/WhySelected";
 import { RecipeDetail } from "../components/RecipeDetail";
-import { OptionalMenu } from "../components/OptionalMenu";
 import { ShoppingListModule } from "../components/ShoppingListModule";
-import { NutritionModule } from "../components/NutritionModule";
 import { SavingsModule } from "../components/SavingsModule";
 import { Dashboard } from "../components/Dashboard";
 import { GuideChapter } from "../components/GuideChapter";
@@ -42,16 +37,21 @@ import { SavedRecipesList } from "../components/SavedRecipesList";
 type Step =
   | "hero" | "howItWorks" | "language" | "country"
   | "diagnosticQ1" | "diagnosticQ2" | "diagnosticQ3" | "diagnosticResult"
-  | "mode" | "allOptions" | "intro"
-  | "people" | "children" | "childrenAges" | "time" | "ingredients" | "shoppingPref" | "dietary" | "preference" | "goal"
-  | "methodEnergy" | "methodTime" | "methodIngredients"
-  | "thinking" | "result" | "why" | "detail"
-  | "optionalMenu" | "shoppingListModule" | "nutritionModule" | "savingsModule"
+  | "mode" | "allOptions"
+  | "time" | "shoppingPref" | "ingredients" | "preference" | "people"
+  | "thinking" | "result"
+  | "shoppingListModule" | "savingsModule"
   | "reject" | "favoriteHow" | "favoriteInput" | "favoriteAdapt" | "finalCta"
   | "weeklyPeople" | "weeklyResult" | "weeklyDayDetail" | "weeklyShopping"
   | "guide" | "myRecipes";
 
-const QUESTION_STEPS: Step[] = ["intro", "people", "children", "time", "ingredients", "shoppingPref", "dietary", "preference", "goal"];
+const CHEF_STEPS: Step[] = ["time", "shoppingPref", "ingredients", "preference", "people"];
+
+function deriveEnergyLevel(time: string): EnergyLevel {
+  if (time === "15") return "low";
+  if (time === "45" || time === "more") return "high";
+  return "medium";
+}
 
 const REJECT_TO_ADAPT: Partial<Record<RejectReason, string>> = {
   faster: "faster",
@@ -81,7 +81,6 @@ export default function Home() {
   const [dietaryRestrictions, setDietaryRestrictions] = useState<string[]>([]);
   const [foodPreference, setFoodPreference] = useState("");
   const [mainGoal, setMainGoal] = useState("");
-  const [energyLevel, setEnergyLevel] = useState<EnergyLevel | "">("");
 
   const [favoriteText, setFavoriteText] = useState("");
   const [favoriteAdaptations, setFavoriteAdaptations] = useState<string[]>([]);
@@ -92,6 +91,10 @@ export default function Home() {
   const [pendingModule, setPendingModule] = useState<"shoppingList" | "calories" | "savings" | null>(null);
   const [pendingReject, setPendingReject] = useState<RejectReason | null>(null);
   const [campaignLocked, setCampaignLocked] = useState(false);
+
+  const [flowStartedAt, setFlowStartedAt] = useState<number | null>(null);
+  const [celebrateResult, setCelebrateResult] = useState(false);
+  const [solvedSeconds, setSolvedSeconds] = useState<number | null>(null);
 
   const [diagnosticQ1, setDiagnosticQ1] = useState("");
   const [diagnosticQ2, setDiagnosticQ2] = useState("");
@@ -156,7 +159,6 @@ export default function Home() {
     setDietaryRestrictions([]);
     setFoodPreference("");
     setMainGoal("");
-    setEnergyLevel("");
     setFavoriteText("");
     setFavoriteAdaptations([]);
     setResult(null);
@@ -164,6 +166,9 @@ export default function Home() {
     setExcludeIds(new Set());
     setPendingModule(null);
     setPendingReject(null);
+    setFlowStartedAt(null);
+    setCelebrateResult(false);
+    setSolvedSeconds(null);
     setDiagnosticQ1("");
     setDiagnosticQ2("");
     setDiagnosticQ3("");
@@ -200,7 +205,7 @@ export default function Home() {
       dietaryRestrictions,
       foodPreference,
       mainGoal,
-      energyLevel: energyLevel || undefined,
+      energyLevel: deriveEnergyLevel(cookingTime),
     };
   }
 
@@ -208,18 +213,24 @@ export default function Home() {
     goTo(campaignLocked ? "diagnosticQ1" : "language");
   }
 
+  function startChefFlow(m: Mode) {
+    setMode(m);
+    setFlowStartedAt(Date.now());
+    goTo("time");
+  }
+
   function startThinkingThenGenerate() {
-    if (mode === "shoppingList" || mode === "calories" || mode === "savings") {
+    if (mode === "shoppingList" || mode === "savings") {
       setPendingModule(mode);
     }
     goTo("thinking");
   }
 
-  function startPresetFlow(overrides: Partial<{ cookingTime: string; mainGoal: string; energyLevel: EnergyLevel }>) {
+  function startPresetFlow(overrides: Partial<{ cookingTime: string; mainGoal: string }>) {
     setMode("solve");
     if (overrides.cookingTime !== undefined) setCookingTime(overrides.cookingTime);
     if (overrides.mainGoal !== undefined) setMainGoal(overrides.mainGoal);
-    if (overrides.energyLevel !== undefined) setEnergyLevel(overrides.energyLevel);
+    setFlowStartedAt(Date.now());
     goTo("thinking");
   }
 
@@ -243,6 +254,8 @@ export default function Home() {
         setFavoriteAdaptations(nextAdaptations);
         const r = adaptFavoriteRecipe(favoriteText, nextAdaptations, buildInput());
         setResult(r);
+        setCelebrateResult(true);
+        setSolvedSeconds(null);
         setStep("result");
         return;
       }
@@ -255,6 +268,8 @@ export default function Home() {
       setExcludeIds(newExclude);
       setResult(r);
       setRecipeId(id);
+      setCelebrateResult(true);
+      setSolvedSeconds(null);
       setStep("result");
       return;
     }
@@ -262,6 +277,8 @@ export default function Home() {
       const r = adaptFavoriteRecipe(favoriteText, favoriteAdaptations, buildInput());
       setResult(r);
       setRecipeId(null);
+      setCelebrateResult(true);
+      setSolvedSeconds(null);
       setStep("result");
       return;
     }
@@ -269,6 +286,14 @@ export default function Home() {
     const { recipeId: id, result: r } = generateRecipe(input, excludeIds);
     setResult(r);
     setRecipeId(id);
+    setCelebrateResult(true);
+    setSolvedSeconds(flowStartedAt ? Math.max(1, Math.round((Date.now() - flowStartedAt) / 1000)) : null);
+    if (pendingModule) {
+      const target = pendingModule === "shoppingList" ? "shoppingListModule" : "savingsModule";
+      setPendingModule(null);
+      setStep(target);
+      return;
+    }
     setStep("result");
   }
 
@@ -285,42 +310,20 @@ export default function Home() {
   function handleDashboardCard(sectionKey: string, cardKey: string) {
     switch (cardKey) {
       case "solve":
-        setMode("solve");
-        goTo("methodEnergy");
+      case "portions":
+        startChefFlow("solve");
         break;
       case "emergency":
-        startPresetFlow({ cookingTime: "10", mainGoal: "fast", energyLevel: "low" });
+        startPresetFlow({ cookingTime: "15", mainGoal: "fast" });
         break;
       case "under30":
-        startPresetFlow({ cookingTime: "30", energyLevel: "medium" });
+        startPresetFlow({ cookingTime: "30" });
         break;
       case "weeklyPlanner":
         goTo("weeklyPeople");
         break;
       case "shoppingList":
-        setMode("shoppingList");
-        goTo("intro");
-        break;
-      case "portions":
-        setMode("solve");
-        goTo("intro");
-        break;
-      case "nutrition":
-      case "calories":
-        setMode("calories");
-        goTo("intro");
-        break;
-      case "tips":
-        openGuide(1);
-        break;
-      case "chapter0":
-        openGuide(0);
-        break;
-      case "chapter1":
-        openGuide(1);
-        break;
-      case "chapter3":
-        openGuide(3);
+        startChefFlow("shoppingList");
         break;
     }
   }
@@ -453,20 +456,23 @@ export default function Home() {
               </div>
               <h1 className="text-2xl font-extrabold text-warm mb-3 leading-snug">{S.diagnostic.profiles[diagnosticProfile].title}</h1>
               <p className="text-warm/80 mb-8 max-w-xs">{S.diagnostic.profiles[diagnosticProfile].body}</p>
-              <Button onClick={() => goTo("mode")}>{S.diagnostic.resultCta}</Button>
+              <Button onClick={() => { setHistory([]); setStep("mode"); }}>{S.diagnostic.resultCta}</Button>
             </div>
           </ScreenShell>
         )}
 
         {step === "mode" && (
-          <ScreenShell key="mode" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack}>
+          <ScreenShell key="mode" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName}>
             <Dashboard
               title={S.dashboard.title}
               subtitle={S.dashboard.subtitle}
+              methodBanner={S.dashboard.methodBanner}
+              quickTitle={S.dashboard.quickTitle}
               sections={S.dashboard.sections as any}
               savedRecipesLabel={S.dashboard.savedRecipesLink}
               moreOptionsLabel={S.dashboard.moreOptions}
               onCard={handleDashboardCard}
+              onMethodBanner={() => openGuide(0)}
               onSavedRecipes={() => goTo("myRecipes")}
               onMoreOptions={() => goTo("allOptions")}
             />
@@ -484,126 +490,39 @@ export default function Home() {
                   emoji={c.emoji}
                   selected={mode === c.key}
                   onClick={() => {
-                    setMode(c.key as Mode);
-                    if (c.key === "adaptFavorite") goTo("favoriteHow");
-                    else if (c.key === "surprise") { setFoodPreference("surprise"); setMainGoal(""); goTo("intro"); }
-                    else goTo("intro");
+                    if (c.key === "adaptFavorite") { setMode(c.key as Mode); goTo("favoriteHow"); }
+                    else startChefFlow(c.key as Mode);
                   }}
                 />
               ))}
             </div>
-          </ScreenShell>
-        )}
-
-        {step === "methodEnergy" && (
-          <ScreenShell key="methodEnergy" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} eyebrow={S.method.eyebrow} progress={{ total: 3, current: 0 }}>
-            <h1 className="text-xl font-extrabold text-warm mb-1">{S.method.title}</h1>
-            <p className="text-muted text-sm mb-6">{S.method.subtitle}</p>
-            <h2 className="text-lg font-bold text-warm mb-4">{S.method.energyTitle}</h2>
-            <div className="flex flex-col gap-3">
-              {S.method.energyOptions.map((label, i) => (
-                <ChoiceCard key={energyKeys[i]} label={label} selected={energyLevel === energyKeys[i]} onClick={() => { setEnergyLevel(energyKeys[i]); goTo("methodTime"); }} />
-              ))}
-            </div>
-          </ScreenShell>
-        )}
-
-        {step === "methodTime" && (
-          <ScreenShell key="methodTime" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} eyebrow={S.method.eyebrow} progress={{ total: 3, current: 1 }}>
-            <h2 className="text-lg font-bold text-warm mb-4">{S.method.timeTitle}</h2>
-            <div className="flex flex-col gap-3">
-              {S.method.timeOptions.map((label, i) => (
-                <ChoiceCard key={methodTimeKeys[i]} label={label} selected={cookingTime === methodTimeKeys[i]} onClick={() => { setCookingTime(methodTimeKeys[i]); goTo("methodIngredients"); }} />
-              ))}
-            </div>
-          </ScreenShell>
-        )}
-
-        {step === "methodIngredients" && (
-          <ScreenShell key="methodIngredients" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} eyebrow={S.method.eyebrow} progress={{ total: 3, current: 2 }}>
-            <h2 className="text-lg font-bold text-warm mb-4">{S.method.ingredientsTitle}</h2>
-            <div className="flex flex-col gap-3">
-              {S.method.ingredientsOptions.map((label, i) => (
-                <ChoiceCard
-                  key={methodIngredientKeys[i]}
-                  label={label}
-                  onClick={() => {
-                    setAvailableIngredients(methodIngredientKeys[i] === "whateverIHave" ? [] : [label]);
-                    startThinkingThenGenerate();
-                  }}
-                />
-              ))}
-            </div>
-          </ScreenShell>
-        )}
-
-        {step === "intro" && (
-          <ScreenShell key="intro" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} progress={{ total: QUESTION_STEPS.length, current: 0 }}>
-            <div className="flex flex-col items-center text-center mt-8">
-              <div className="w-20 h-20 rounded-full bg-surface border border-orange/30 flex items-center justify-center mb-6 shadow-glow">
-                <Logo size={40} showText={false} />
-              </div>
-              <p className="text-lg text-warm/90 leading-snug mb-8 max-w-xs">{S.intro.message}</p>
-              <Button onClick={() => goTo("people")}>{S.intro.cta} →</Button>
-            </div>
-          </ScreenShell>
-        )}
-
-        {step === "people" && (
-          <ScreenShell key="people" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} progress={{ total: QUESTION_STEPS.length, current: 1 }}>
-            <h1 className="text-2xl font-extrabold text-warm mb-6">{S.people.title}</h1>
-            <div className="flex flex-col gap-3">
-              {S.people.options.map((label, i) => (
-                <ChoiceCard key={peopleKeys[i]} label={label} selected={people === peopleKeys[i]} onClick={() => { setPeople(peopleKeys[i]); goTo("children"); }} />
-              ))}
-            </div>
-          </ScreenShell>
-        )}
-
-        {step === "children" && (
-          <ScreenShell key="children" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} progress={{ total: QUESTION_STEPS.length, current: 2 }}>
-            <h1 className="text-2xl font-extrabold text-warm mb-6">{S.children.title}</h1>
-            <div className="flex flex-col gap-3">
-              <ChoiceCard label={S.children.yes} selected={hasChildren} onClick={() => { setHasChildren(true); goTo("childrenAges"); }} />
-              <ChoiceCard label={S.children.no} selected={!hasChildren && childrenAges.length === 0} onClick={() => { setHasChildren(false); setChildrenAges([]); goTo("time"); }} />
-            </div>
-          </ScreenShell>
-        )}
-
-        {step === "childrenAges" && (
-          <ScreenShell key="childrenAges" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} progress={{ total: QUESTION_STEPS.length, current: 2 }}>
-            <h1 className="text-2xl font-extrabold text-warm mb-6">{S.children.agesTitle}</h1>
-            <div className="flex flex-col gap-3 mb-8">
-              {S.children.ages.map((label, i) => {
-                const key = childrenAgesKeys[i];
-                const selected = childrenAges.includes(key);
-                return (
-                  <ChoiceCard
-                    key={key}
-                    label={label}
-                    selected={selected}
-                    onClick={() => setChildrenAges((prev) => (selected ? prev.filter((a) => a !== key) : [...prev, key]))}
-                  />
-                );
-              })}
-            </div>
-            <Button onClick={() => goTo("time")} disabled={childrenAges.length === 0}>{S.ui.next}</Button>
           </ScreenShell>
         )}
 
         {step === "time" && (
-          <ScreenShell key="time" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} progress={{ total: QUESTION_STEPS.length, current: 3 }}>
+          <ScreenShell key="time" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} progress={{ total: CHEF_STEPS.length, current: 0 }}>
             <h1 className="text-2xl font-extrabold text-warm mb-6">{S.time.title}</h1>
             <div className="flex flex-col gap-3">
               {S.time.options.map((label, i) => (
-                <ChoiceCard key={timeKeys[i]} label={label} selected={cookingTime === timeKeys[i]} onClick={() => { setCookingTime(timeKeys[i]); goTo("ingredients"); }} />
+                <ChoiceCard key={timeKeys[i]} label={label} selected={cookingTime === timeKeys[i]} onClick={() => { setCookingTime(timeKeys[i]); goTo("shoppingPref"); }} />
+              ))}
+            </div>
+          </ScreenShell>
+        )}
+
+        {step === "shoppingPref" && (
+          <ScreenShell key="shoppingPref" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} progress={{ total: CHEF_STEPS.length, current: 1 }}>
+            <h1 className="text-2xl font-extrabold text-warm mb-6">{S.shoppingPref.title}</h1>
+            <div className="flex flex-col gap-3">
+              {S.shoppingPref.options.map((label, i) => (
+                <ChoiceCard key={shoppingPrefKeys[i]} label={label} selected={shoppingPreference === shoppingPrefKeys[i]} onClick={() => { setShoppingPreference(shoppingPrefKeys[i]); goTo("ingredients"); }} />
               ))}
             </div>
           </ScreenShell>
         )}
 
         {step === "ingredients" && (
-          <ScreenShell key="ingredients" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} progress={{ total: QUESTION_STEPS.length, current: 4 }}>
+          <ScreenShell key="ingredients" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} progress={{ total: CHEF_STEPS.length, current: 2 }}>
             <h1 className="text-2xl font-extrabold text-warm mb-6">{S.ingredients.title}</h1>
             <IngredientChips
               value={availableIngredients}
@@ -612,65 +531,44 @@ export default function Home() {
               suggestions={suggestions}
               suggestedLabel={S.ingredients.suggestedLabel}
             />
-            <Button onClick={() => goTo("shoppingPref")} className="mt-8">{S.ui.next}</Button>
-          </ScreenShell>
-        )}
-
-        {step === "shoppingPref" && (
-          <ScreenShell key="shoppingPref" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} progress={{ total: QUESTION_STEPS.length, current: 5 }}>
-            <h1 className="text-2xl font-extrabold text-warm mb-6">{S.shoppingPref.title}</h1>
-            <div className="flex flex-col gap-3">
-              {S.shoppingPref.options.map((label, i) => (
-                <ChoiceCard key={shoppingPrefKeys[i]} label={label} selected={shoppingPreference === shoppingPrefKeys[i]} onClick={() => { setShoppingPreference(shoppingPrefKeys[i]); goTo("dietary"); }} />
-              ))}
-            </div>
-          </ScreenShell>
-        )}
-
-        {step === "dietary" && (
-          <ScreenShell key="dietary" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} progress={{ total: QUESTION_STEPS.length, current: 6 }}>
-            <h1 className="text-2xl font-extrabold text-warm mb-6">{S.dietary.title}</h1>
-            <div className="flex flex-col gap-3 mb-8">
-              {S.dietary.options.map((label, i) => {
-                const key = dietaryKeys[i];
-                const selected = dietaryRestrictions.includes(key);
-                return (
-                  <ChoiceCard
-                    key={key}
-                    label={label}
-                    selected={selected}
-                    onClick={() =>
-                      setDietaryRestrictions((prev) => {
-                        if (key === "none") return ["none"];
-                        const withoutNone = prev.filter((p) => p !== "none");
-                        return selected ? withoutNone.filter((p) => p !== key) : [...withoutNone, key];
-                      })
-                    }
-                  />
-                );
-              })}
-            </div>
-            <Button onClick={() => goTo(mode === "surprise" ? "goal" : "preference")} disabled={dietaryRestrictions.length === 0}>{S.ui.next}</Button>
+            <Button onClick={() => goTo("preference")} className="mt-8">{S.ui.next}</Button>
           </ScreenShell>
         )}
 
         {step === "preference" && (
-          <ScreenShell key="preference" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} progress={{ total: QUESTION_STEPS.length, current: 7 }}>
+          <ScreenShell key="preference" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} progress={{ total: CHEF_STEPS.length, current: 3 }}>
             <h1 className="text-2xl font-extrabold text-warm mb-6">{S.preference.title}</h1>
             <div className="flex flex-col gap-3">
-              {S.preference.options.map((label, i) => (
-                <ChoiceCard key={preferenceKeys[i]} label={label} selected={foodPreference === preferenceKeys[i]} onClick={() => { setFoodPreference(preferenceKeys[i]); goTo("goal"); }} />
-              ))}
+              {S.preference.options.map((label, i) => {
+                const key = preferenceKeys[i];
+                return (
+                  <ChoiceCard
+                    key={key}
+                    label={label}
+                    selected={foodPreference === key}
+                    onClick={() => {
+                      setFoodPreference(key);
+                      setDietaryRestrictions(key === "vegetarian" ? ["vegetarian"] : []);
+                      goTo("people");
+                    }}
+                  />
+                );
+              })}
             </div>
           </ScreenShell>
         )}
 
-        {step === "goal" && (
-          <ScreenShell key="goal" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} progress={{ total: QUESTION_STEPS.length, current: 8 }}>
-            <h1 className="text-2xl font-extrabold text-warm mb-6">{S.goal.title}</h1>
+        {step === "people" && (
+          <ScreenShell key="people" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} progress={{ total: CHEF_STEPS.length, current: 4 }}>
+            <h1 className="text-2xl font-extrabold text-warm mb-6">{S.people.title}</h1>
             <div className="flex flex-col gap-3">
-              {S.goal.options.map((label, i) => (
-                <ChoiceCard key={goalKeys[i]} label={label} selected={mainGoal === goalKeys[i]} onClick={() => { setMainGoal(goalKeys[i]); startThinkingThenGenerate(); }} />
+              {S.people.options.map((label, i) => (
+                <ChoiceCard
+                  key={peopleKeys[i]}
+                  label={label}
+                  selected={people === peopleKeys[i]}
+                  onClick={() => { setPeople(peopleKeys[i]); startThinkingThenGenerate(); }}
+                />
               ))}
             </div>
           </ScreenShell>
@@ -733,14 +631,24 @@ export default function Home() {
         )}
 
         {step === "result" && result && (
-          <ScreenShell key="result" onHome={goHome} onBack={() => setStep("mode")} backLabel={S.ui.backWord} appName={S.appName}>
-            <ResultScreen
+          <ScreenShell key="result" onHome={goHome} onBack={celebrateResult ? () => setStep("mode") : goBack} backLabel={S.ui.backWord} appName={S.appName} wide>
+            <RecipeDetail
               result={result}
               strings={S}
-              onViewRecipe={() => goTo("why")}
-              onDislike={() => goTo("reject")}
-              onAnother={() => handleReject("surpriseAgain")}
+              onCopy={copyToClipboard}
+              onSaveFavorite={() => saveFavorite(result, recipeId)}
+              celebrate={celebrateResult}
+              elapsedSeconds={solvedSeconds}
+              onDislike={celebrateResult ? () => goTo("reject") : undefined}
+              onAnother={celebrateResult ? () => handleReject("surpriseAgain") : undefined}
+              onShoppingList={() => goTo("shoppingListModule")}
+              onSavings={() => goTo("savingsModule")}
             />
+            {celebrateResult && (
+              <button onClick={() => goTo("finalCta")} className="text-orange text-sm font-bold text-center mt-6 hover:underline">
+                {S.actions.discover}
+              </button>
+            )}
           </ScreenShell>
         )}
 
@@ -755,59 +663,15 @@ export default function Home() {
           </ScreenShell>
         )}
 
-        {step === "why" && result && (
-          <ScreenShell key="why" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack}>
-            <WhySelected reasons={result.whySelected} title={S.why.title} ctaLabel={S.result.viewRecipe} onNext={() => goTo("detail")} />
-          </ScreenShell>
-        )}
-
-        {step === "detail" && result && (
-          <ScreenShell key="detail" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack} wide>
-            <RecipeDetail
-              result={result}
-              strings={S}
-              onCopy={copyToClipboard}
-              onContinue={() => goTo("optionalMenu")}
-              onSaveFavorite={() => saveFavorite(result, recipeId)}
-            />
-          </ScreenShell>
-        )}
-
-        {step === "optionalMenu" && (
-          <ScreenShell key="optionalMenu" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack}>
-            <OptionalMenuGate
-              pendingModule={pendingModule}
-              setPendingModule={setPendingModule}
-              setStep={setStep}
-              title={S.actions.more}
-              strings={S}
-              onSelect={(key: "shoppingList" | "calories" | "savings" | "another" | "adapt") => {
-                if (key === "shoppingList") setStep("shoppingListModule");
-                else if (key === "calories") setStep("nutritionModule");
-                else if (key === "savings") setStep("savingsModule");
-                else if (key === "another") handleReject("surpriseAgain");
-              }}
-              discoverLabel={S.actions.discover}
-              onDiscover={() => goTo("finalCta")}
-            />
-          </ScreenShell>
-        )}
-
         {step === "shoppingListModule" && result && (
-          <ScreenShell key="shoppingListModule" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={() => setStep("optionalMenu")}>
-            <ShoppingListModule shoppingList={result.shoppingList} strings={S} onCopy={copyToClipboard} onBack={() => setStep("optionalMenu")} />
-          </ScreenShell>
-        )}
-
-        {step === "nutritionModule" && result && (
-          <ScreenShell key="nutritionModule" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={() => setStep("optionalMenu")}>
-            <NutritionModule result={result} strings={S} onBack={() => setStep("optionalMenu")} />
+          <ScreenShell key="shoppingListModule" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={() => setStep("result")}>
+            <ShoppingListModule shoppingList={result.shoppingList} strings={S} onCopy={copyToClipboard} onBack={() => setStep("result")} />
           </ScreenShell>
         )}
 
         {step === "savingsModule" && result && (
-          <ScreenShell key="savingsModule" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={() => setStep("optionalMenu")}>
-            <SavingsModule result={result} strings={S} onBack={() => setStep("optionalMenu")} />
+          <ScreenShell key="savingsModule" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={() => setStep("result")}>
+            <SavingsModule result={result} strings={S} onBack={() => setStep("result")} />
           </ScreenShell>
         )}
 
@@ -887,7 +751,7 @@ export default function Home() {
               title={S.guide.title}
               onPrev={() => setGuideChapterIndex((i) => Math.max(0, i - 1))}
               onNext={() => setGuideChapterIndex((i) => Math.min(S.guide.chapters.length - 1, i + 1))}
-              onDone={() => goTo("mode")}
+              onDone={() => { setHistory([]); setStep("mode"); }}
               doneLabel={S.guide.cta}
               prevLabel={S.ui.backWord}
               nextLabel={S.ui.next.replace(" →", "")}
@@ -907,7 +771,9 @@ export default function Home() {
                 if (!fav) return;
                 setResult(fav.result);
                 setRecipeId(fav.id);
-                goTo("detail");
+                setCelebrateResult(false);
+                setSolvedSeconds(null);
+                goTo("result");
               }}
               onRemove={removeFavorite}
             />
@@ -992,21 +858,4 @@ function FinalCta({ S, onTryAnother }: { S: any; onTryAnother: () => void }) {
       <button onClick={onTryAnother} className="text-muted text-sm hover:text-warm transition-colors">{S.finalCta.secondary}</button>
     </div>
   );
-}
-
-function OptionalMenuGate({
-  pendingModule,
-  setPendingModule,
-  setStep,
-  ...props
-}: any) {
-  useEffect(() => {
-    if (pendingModule) {
-      const target = pendingModule === "shoppingList" ? "shoppingListModule" : pendingModule === "calories" ? "nutritionModule" : "savingsModule";
-      setPendingModule(null);
-      setStep(target);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  return <OptionalMenu {...props} />;
 }

@@ -64,6 +64,12 @@ export interface Macros {
   sodium?: string;
 }
 
+export interface Pairing {
+  side: string;
+  dessert: string;
+  drink: string;
+}
+
 export interface DeliverySavings {
   cookingCost: string;
   deliveryCost: string;
@@ -84,6 +90,8 @@ export interface ChefAIResult {
   caloriesPerServing?: number;
   nutritionScore?: number;
   macros?: Macros;
+  healthBenefits: string[];
+  pairing: Pairing;
   whySelected: string[];
   ingredients: Ingredient[];
   missingIngredients: MissingIngredient[];

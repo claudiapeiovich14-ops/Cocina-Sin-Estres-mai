@@ -87,6 +87,14 @@ export function adaptFavoriteRecipe(recipeText: string, adaptationKeys: string[]
     caloriesPerServing: adaptationKeys.includes("lowerCalories") ? 380 : 520,
     nutritionScore: adaptationKeys.includes("healthier") ? 82 : 70,
     macros: { protein: "24g", carbs: "48g", fat: "16g" },
+    healthBenefits: lang === "es"
+      ? ["Mantuvimos el balance de nutrientes de tu receta original."]
+      : ["We kept the nutrient balance of your original recipe."],
+    pairing: {
+      side: lang === "es" ? "Una ensalada verde simple." : "A simple green salad.",
+      dessert: lang === "es" ? "Fruta fresca de estación." : "Fresh seasonal fruit.",
+      drink: lang === "es" ? "Agua saborizada o el vino que prefieras." : "Infused water or a wine of your choice.",
+    },
     whySelected,
     ingredients,
     missingIngredients,

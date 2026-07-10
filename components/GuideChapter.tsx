@@ -11,7 +11,7 @@ export interface GuideChapterData {
   quote: string;
 }
 
-const CHAPTER_EMOJI = ["🤯", "⚠️", "🆘", "📅"];
+const CHAPTER_EMOJI = ["🤯", "⚠️", "🆘", "📅", "🧹"];
 
 export function GuideChapter({
   chapter,
