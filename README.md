@@ -12,20 +12,31 @@ No backend, no base de datos, no cuentas de usuario. Motor de decisión mock del
 
 ## Desarrollo
 
-```bash
+\`\`\`bash
 npm install
 npm run dev
-```
+\`\`\`
 
 ## Estructura
 
-- `app/page.tsx` — máquina de estados con las 23 pantallas del flujo.
-- `lib/ai/decisionEngine.ts` — motor de decisión + regeneración ("no me convence").
-- `lib/ai/mockChefAI.ts` — adaptador para recetas favoritas pegadas por el usuario.
-- `lib/data/recipes.ts` — banco de recetas (bilingüe, es/en).
-- `lib/i18n/strings.ts` — textos de la interfaz en español e inglés.
-- `components/screens/AiThinking.tsx` — la animación central de "calculando tu resultado".
+- `app/page.tsx` — máquina de estados con las pantallas del flujo.
+- `lib/decisionEngine.ts` — motor de decisión + regeneración ("no me convence").
+- `lib/mockChefAI.ts` — adaptador para recetas favoritas pegadas por el usuario.
+- `lib/recipes.ts` — banco de recetas y snacks (bilingüe, es/en).
+- `lib/occasionMenus.ts` — menús curados para ocasiones especiales.
+- `lib/strings.ts` — textos de la interfaz en español e inglés.
+- `components/AiThinking.tsx` — la animación central de "calculando tu resultado".
 
 ## Idioma y país
 
 Son selectores independientes: el idioma controla los textos de la interfaz: el país controla ingredientes sugeridos, moneda y contexto local. Por ahora español e inglés están completos; el resto de los idiomas del PRD quedan preparados en la estructura para sumarse después.
+
+## Deploy a GitHub Pages
+
+La app es 100% frontend, así que se exporta como sitio estático (`next.config.js` usa `output: "export"`) y se publica con GitHub Actions en cada push a `main` (ver `.github/workflows/deploy.yml`).
+
+Paso único manual: en el repo de GitHub, ir a **Settings → Pages** y elegir **Source: GitHub Actions**. Después de eso, cada push a `main` la vuelve a publicar sola en `https://<usuario>.github.io/Cocina-Sin-Estres-mai/`.
+
+\`\`\`bash
+GITHUB_ACTIONS=true npm run build   # genera ./out con el basePath del repo, igual que en CI
+\`\`\`
