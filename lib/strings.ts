@@ -118,6 +118,7 @@ export const strings = {
             { key: "solve", emoji: "🍽", label: "¿Qué cocino hoy?" },
             { key: "emergency", emoji: "🆘", label: "Menú de emergencia" },
             { key: "under30", emoji: "⏱", label: "Recetas en 30 minutos o menos" },
+            { key: "snack", emoji: "🥨", label: "Snack saludable al toque" },
           ],
         },
         {
@@ -127,6 +128,7 @@ export const strings = {
             { key: "weeklyPlanner", emoji: "📅", label: "Planificador semanal" },
             { key: "shoppingList", emoji: "🛒", label: "Lista de compras inteligente" },
             { key: "portions", emoji: "🍽", label: "Cálculo por comensales" },
+            { key: "occasions", emoji: "🎉", label: "Menús para ocasiones especiales" },
           ],
         },
       ],
@@ -299,6 +301,11 @@ export const strings = {
       cta: "Armar mi semana →",
       viewDay: "Ver receta",
       backToWeek: "← Volver a la semana",
+    },
+    occasions: {
+      title: "Menús para ocasiones especiales",
+      subtitle: "Elegí la ocasión y te armo un menú listo.",
+      menuSubtitle: "Tocá una receta para verla completa.",
     },
     savedRecipes: {
       title: "Mis recetas guardadas",
@@ -493,6 +500,7 @@ export const strings = {
             { key: "solve", emoji: "🍽", label: "What should I cook today?" },
             { key: "emergency", emoji: "🆘", label: "Emergency menu" },
             { key: "under30", emoji: "⏱", label: "Recipes in 30 minutes or less" },
+            { key: "snack", emoji: "🥨", label: "Quick healthy snack" },
           ],
         },
         {
@@ -502,6 +510,7 @@ export const strings = {
             { key: "weeklyPlanner", emoji: "📅", label: "Weekly planner" },
             { key: "shoppingList", emoji: "🛒", label: "Smart shopping list" },
             { key: "portions", emoji: "🍽", label: "Servings calculator" },
+            { key: "occasions", emoji: "🎉", label: "Special occasion menus" },
           ],
         },
       ],
@@ -674,6 +683,11 @@ export const strings = {
       cta: "Build my week →",
       viewDay: "View recipe",
       backToWeek: "← Back to the week",
+    },
+    occasions: {
+      title: "Special occasion menus",
+      subtitle: "Pick the occasion and I'll put together a ready menu.",
+      menuSubtitle: "Tap a recipe to see it in full.",
     },
     savedRecipes: {
       title: "My saved recipes",

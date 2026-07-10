@@ -13,9 +13,10 @@ import type {
   ChefAIInput, ChefAIResult, Lang, Mode, RejectReason,
   DiagnosticProfileKey, EnergyLevel, WeeklyPlan, FavoriteRecipe,
 } from "../lib/types";
-import { generateRecipe, regenerate, generateWeeklyPlan } from "../lib/decisionEngine";
+import { generateRecipe, regenerate, generateWeeklyPlan, generateSnack, generateFromRecipeId } from "../lib/decisionEngine";
 import { adaptFavoriteRecipe } from "../lib/mockChefAI";
 import { computeDiagnosticProfile } from "../lib/diagnostic";
+import { occasionMenus } from "../lib/occasionMenus";
 import { storage } from "../lib/storage";
 import { readCampaignLocale } from "../lib/urlParams";
 
@@ -43,6 +44,7 @@ type Step =
   | "shoppingListModule" | "savingsModule"
   | "reject" | "favoriteHow" | "favoriteInput" | "favoriteAdapt" | "finalCta"
   | "weeklyPeople" | "weeklyResult" | "weeklyDayDetail" | "weeklyShopping"
+  | "occasions" | "occasionMenu"
   | "guide" | "myRecipes";
 
 const CHEF_STEPS: Step[] = ["time", "shoppingPref", "ingredients", "preference", "people"];
@@ -102,10 +104,13 @@ export default function Home() {
   const [diagnosticProfile, setDiagnosticProfile] = useState<DiagnosticProfileKey | null>(null);
 
   const [pendingWeekly, setPendingWeekly] = useState(false);
+  const [pendingSnack, setPendingSnack] = useState(false);
+  const [snackMode, setSnackMode] = useState(false);
   const [weeklyPlan, setWeeklyPlan] = useState<WeeklyPlan | null>(null);
   const [weeklyDayIndex, setWeeklyDayIndex] = useState(0);
 
   const [guideChapterIndex, setGuideChapterIndex] = useState(0);
+  const [selectedOccasion, setSelectedOccasion] = useState<string | null>(null);
   const [favorites, setFavorites] = useState<FavoriteRecipe[]>([]);
 
   const S = t(lang);
@@ -175,6 +180,17 @@ export default function Home() {
     setDiagnosticProfile(null);
     setWeeklyPlan(null);
     setPendingWeekly(false);
+    setPendingSnack(false);
+    setSnackMode(false);
+    setSelectedOccasion(null);
+  }
+
+  function startSnackFlow() {
+    setMode("solve");
+    setPendingSnack(true);
+    setSnackMode(true);
+    setFlowStartedAt(Date.now());
+    goTo("thinking");
   }
 
   function flash(msg: string) {
@@ -215,6 +231,7 @@ export default function Home() {
 
   function startChefFlow(m: Mode) {
     setMode(m);
+    setSnackMode(false);
     setFlowStartedAt(Date.now());
     goTo("time");
   }
@@ -228,6 +245,7 @@ export default function Home() {
 
   function startPresetFlow(overrides: Partial<{ cookingTime: string; mainGoal: string }>) {
     setMode("solve");
+    setSnackMode(false);
     if (overrides.cookingTime !== undefined) setCookingTime(overrides.cookingTime);
     if (overrides.mainGoal !== undefined) setMainGoal(overrides.mainGoal);
     setFlowStartedAt(Date.now());
@@ -235,6 +253,16 @@ export default function Home() {
   }
 
   function onThinkingDone() {
+    if (pendingSnack) {
+      setPendingSnack(false);
+      const { recipeId: id, result: r } = generateSnack(buildInput(), excludeIds);
+      setResult(r);
+      setRecipeId(id);
+      setCelebrateResult(true);
+      setSolvedSeconds(flowStartedAt ? Math.max(1, Math.round((Date.now() - flowStartedAt) / 1000)) : null);
+      setStep("result");
+      return;
+    }
     if (pendingWeekly) {
       setPendingWeekly(false);
       const plan = generateWeeklyPlan(buildInput(), [...S.weeklyPlanner.dayLabels]);
@@ -264,7 +292,7 @@ export default function Home() {
       const newExclude = new Set(excludeIds);
       if (recipeId) newExclude.add(recipeId);
       const input = buildInput();
-      const { recipeId: id, result: r } = regenerate(input, newExclude, prevId, reason);
+      const { recipeId: id, result: r } = snackMode ? generateSnack(input, newExclude) : regenerate(input, newExclude, prevId, reason);
       setExcludeIds(newExclude);
       setResult(r);
       setRecipeId(id);
@@ -282,6 +310,7 @@ export default function Home() {
       setStep("result");
       return;
     }
+    setSnackMode(false);
     const input = buildInput();
     const { recipeId: id, result: r } = generateRecipe(input, excludeIds);
     setResult(r);
@@ -324,6 +353,12 @@ export default function Home() {
         break;
       case "shoppingList":
         startChefFlow("shoppingList");
+        break;
+      case "snack":
+        startSnackFlow();
+        break;
+      case "occasions":
+        goTo("occasions");
         break;
     }
   }
@@ -739,6 +774,63 @@ export default function Home() {
         {step === "weeklyShopping" && weeklyPlan && (
           <ScreenShell key="weeklyShopping" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={() => setStep("weeklyResult")}>
             <ShoppingListModule shoppingList={weeklyPlan.shoppingList} strings={S} onCopy={copyToClipboard} onBack={() => setStep("weeklyResult")} />
+          </ScreenShell>
+        )}
+
+        {step === "occasions" && (
+          <ScreenShell key="occasions" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack}>
+            <h1 className="text-2xl font-extrabold text-warm mb-1">{S.occasions.title}</h1>
+            <p className="text-muted text-sm mb-6">{S.occasions.subtitle}</p>
+            <div className="flex flex-col gap-3">
+              {occasionMenus.map((o) => (
+                <button
+                  key={o.key}
+                  onClick={() => { setSelectedOccasion(o.key); goTo("occasionMenu"); }}
+                  className="w-full text-left rounded-2xl border border-white/8 bg-surface hover:border-orange/40 transition-colors px-4 py-3.5 flex items-start gap-3"
+                >
+                  <span className="text-xl flex-shrink-0">{o.emoji}</span>
+                  <div>
+                    <p className="font-semibold text-warm/90">{o.label[lang]}</p>
+                    <p className="text-xs text-muted mt-0.5">{o.note[lang]}</p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </ScreenShell>
+        )}
+
+        {step === "occasionMenu" && selectedOccasion && (
+          <ScreenShell key="occasionMenu" onHome={goHome} backLabel={S.ui.backWord} appName={S.appName} onBack={goBack}>
+            {(() => {
+              const occasion = occasionMenus.find((o) => o.key === selectedOccasion);
+              if (!occasion) return null;
+              return (
+                <>
+                  <h1 className="text-2xl font-extrabold text-warm mb-1">{occasion.emoji} {occasion.label[lang]}</h1>
+                  <p className="text-muted text-sm mb-6">{S.occasions.menuSubtitle}</p>
+                  <div className="flex flex-col gap-3">
+                    {occasion.recipeIds.map((rid) => {
+                      const generated = generateFromRecipeId(rid, buildInput());
+                      if (!generated) return null;
+                      return (
+                        <ChoiceCard
+                          key={rid}
+                          emoji={generated.result.imageEmoji}
+                          label={generated.result.localizedRecipeName ?? generated.result.recipeName}
+                          onClick={() => {
+                            setResult(generated.result);
+                            setRecipeId(generated.recipeId);
+                            setCelebrateResult(false);
+                            setSolvedSeconds(null);
+                            goTo("result");
+                          }}
+                        />
+                      );
+                    })}
+                  </div>
+                </>
+              );
+            })()}
           </ScreenShell>
         )}
 

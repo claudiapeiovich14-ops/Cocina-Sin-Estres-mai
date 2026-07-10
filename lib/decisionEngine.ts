@@ -47,6 +47,7 @@ interface ScoreOpts {
   forceOnlyHave?: boolean;
   forceCanBuy?: boolean;
   randomize?: boolean;
+  wantSnack?: boolean;
 }
 
 function passesHardDietaryFilters(recipe: RecipeTemplate, restrictions: string[]): boolean {
@@ -143,9 +144,10 @@ function scoreRecipe(recipe: RecipeTemplate, input: ChefAIInput, opts: ScoreOpts
 
 function pickRecipe(input: ChefAIInput, opts: ScoreOpts = {}): RecipeTemplate {
   const restrictions = input.dietaryRestrictions ?? [];
-  let candidates = recipes.filter((r) => !opts.excludeIds?.has(r.id) && passesHardDietaryFilters(r, restrictions));
-  if (candidates.length === 0) candidates = recipes.filter((r) => !opts.excludeIds?.has(r.id));
-  if (candidates.length === 0) candidates = recipes;
+  const inScope = (r: RecipeTemplate) => (opts.wantSnack ? r.category === "snack" : r.category !== "snack");
+  let candidates = recipes.filter((r) => inScope(r) && !opts.excludeIds?.has(r.id) && passesHardDietaryFilters(r, restrictions));
+  if (candidates.length === 0) candidates = recipes.filter((r) => inScope(r) && !opts.excludeIds?.has(r.id));
+  if (candidates.length === 0) candidates = recipes.filter(inScope);
 
   const scored = candidates.map((r) => ({ r, s: scoreRecipe(r, input, opts) }));
   scored.sort((a, b) => b.s - a.s);
@@ -291,6 +293,17 @@ export function buildResult(recipe: RecipeTemplate, input: ChefAIInput): ChefAIR
 export function generateRecipe(input: ChefAIInput, excludeIds: Set<string> = new Set()): { recipeId: string; result: ChefAIResult } {
   const randomize = input.mainGoal === "" && input.foodPreference === "surprise";
   const recipe = pickRecipe(input, { excludeIds, randomize });
+  return { recipeId: recipe.id, result: buildResult(recipe, input) };
+}
+
+export function generateSnack(input: ChefAIInput, excludeIds: Set<string> = new Set()): { recipeId: string; result: ChefAIResult } {
+  const recipe = pickRecipe(input, { excludeIds, wantSnack: true, randomize: true });
+  return { recipeId: recipe.id, result: buildResult(recipe, input) };
+}
+
+export function generateFromRecipeId(recipeId: string, input: ChefAIInput): { recipeId: string; result: ChefAIResult } | null {
+  const recipe = recipes.find((r) => r.id === recipeId);
+  if (!recipe) return null;
   return { recipeId: recipe.id, result: buildResult(recipe, input) };
 }
 
